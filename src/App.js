@@ -1,11 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
+import './NavbarComponent'
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        {/* Naming below is to avoid clashes w bootstrap's use of 'navbar' as a reserved word */}
+        <NavbarComponent/>
         <p>
           HI TEST Edit <code>src/App.js</code> and save to reload
         </p>
