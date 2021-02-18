@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         {/* Naming below is to avoid clashes w bootstrap's use of 'navbar' as a reserved word */}
-        <NavbarComponent/>
+        <NavbarComponent/>  hello 
         <p>
           HI TEST Edit <code>src/App.js</code> and save to reload
         </p>
