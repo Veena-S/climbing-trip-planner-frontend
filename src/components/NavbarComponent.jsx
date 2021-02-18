@@ -1,18 +1,27 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import { LinkContainer } from "react-router-bootstrap";
 
 export default function NavbarComponent() {
   return (
     <>
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+        <LinkContainer to="/home">
+          <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+        </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#home">Add</Nav.Link>
-            <Nav.Link href="#link">View All</Nav.Link>
+            <LinkContainer to="/home">
+              <Nav.Link> HomePage</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/createNewTrip">
+              <Nav.Link>Add</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/viewAll">
+              <Nav.Link>View All</Nav.Link>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
