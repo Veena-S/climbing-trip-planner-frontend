@@ -5,7 +5,8 @@ import axios from 'axios'
 // we moved all of this data from the app component into the store
 export const initialState ={
   trips: {}, // TripId: TripData, including respective routes array
-  currentTripId: 0,
+  currentTripId: 0, // Id of the currently selected trip
+  uniqueRouteNames: [], // Array of unique route names
 }
 
 // just like the todo app, define each action we want to do on the
@@ -15,6 +16,8 @@ const REMOVE_TRIP = "REMOVE_TRIP";
 const ADD_ROUTE = "ADD_ROUTE";
 const LOAD_TRIPS = "LOAD_TRIPS";
 const SELECT_TRIP = "SELECT_TRIP";
+const LOAD_ROUTE_NAMES = "LOAD_ROUTE_NAMES";
+const ADD_ROUTE_NAME = "ADD_ROUTE_NAME";
 
 // define the matching reducer function
 export function tripReducer(state, action){
@@ -44,6 +47,14 @@ export function tripReducer(state, action){
 
     case LOAD_TRIPS:
       return {...state, trips: action.payload.trips};
+
+    case LOAD_ROUTE_NAMES:
+      return {...state, uniqueRouteNames: [...new Set(action.payload.routeNames)]};
+
+    case ADD_ROUTE_NAME:
+      let routeNames = [...state.uniqueRouteNames];
+      routeNames.push(action.payload.routeName);
+      return {...state, uniqueRouteNames: [...new Set(routeNames)]};
 
     case SELECT_TRIP:
       const currentTripId = action.payload.tripId;
@@ -94,6 +105,25 @@ export function loadTripsAction(trips) {
     }
   };
 }
+
+export function loadUniqueRouteNamesAction(routeNames){
+  return {
+    type: LOAD_ROUTE_NAMES,
+    payload:{
+      routeNames
+    }
+  }
+}
+
+export function addNewRouteNameAction(routeName){
+  return {
+    type: ADD_ROUTE_NAME,
+    payload:{
+      routeName
+    }
+  }
+}
+
 export function selectTripAction(tripId) {
   return {
     type: SELECT_TRIP,
@@ -158,6 +188,12 @@ export function loadTrips(dispatch){
   axios.get(BACKEND_URL+'/trips').then((result) => {
     dispatch(loadTripsAction(result.data.trips));
   });
+}
+
+export function loadUniqueRouteNames(dispatch){
+  axios.get(BACKEND_URL + '/route-names').then((result) => {
+    dispatch(loadUniqueRouteNamesAction(result.data.routeNames));
+  })
 }
 
 export function createTrip(dispatch, trip){

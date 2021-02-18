@@ -29,12 +29,18 @@ import { getTripStatus, TRIPS_STATUS } from "../utils/helperFns.js";
 export default function TripDetails() {
   const { store, dispatch } = useContext(TripContext);
   const { trips, currentTripId } = store;
+  let isTripIdValid = trips.hasOwnProperty(currentTripId);
+  if(!isTripIdValid){
+    return(
+      <div className="container m-3 p-3 text-center">
+        Please select or add a trip
+      </div>
+    )
+  }
+
   const tripData = trips[currentTripId];
 
-  let isUpcomingTrip =
-    TRIPS_STATUS.UPCOMING_TRIP ===
-    // what are the args that should go inside
-    getTripStatus(tripData.startDate, tripData.endDate);
+  let isUpcomingTrip = ( TRIPS_STATUS.UPCOMING_TRIP === getTripStatus(tripData.startDate, tripData.endDate));
 
   return (
     <div className="container m-3 p-3">
