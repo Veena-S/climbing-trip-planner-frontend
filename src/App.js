@@ -1,27 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
-import './NavbarComponent'
+import NavbarComponent from './components/NavbarComponent'
+import HomePage from './components/HomePage'
+import CreateNewTrip from './components/CreateNewTrip'
+import ViewAll from  './components/ViewAll'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import {TripProvider} from "./store"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        {/* Naming below is to avoid clashes w bootstrap's use of 'navbar' as a reserved word */}
-        <NavbarComponent/>  hello 
-        <p>
-          HI TEST Edit <code>src/App.js</code> and save to reload
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TripProvider>
+      <Router >
+        <NavbarComponent/>
+        <Switch>
+          <Route path='/home' component={HomePage}/>
+          <Route path='/viewAll' component={ViewAll}/>
+          <Route path='/createNewTrip' component={CreateNewTrip}/>
+        </Switch>
+      </Router>
+       
+    </TripProvider>
   );
 }
 
