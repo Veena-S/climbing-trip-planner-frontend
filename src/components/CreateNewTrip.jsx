@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./styles.css";
+import Button from "react-bootstrap/Button";
 import "react-dates/initialize";
 import {
   DateRangePicker,
@@ -15,20 +15,21 @@ const FORM_FIELD_NAMES = {
 const { TRIP_NAME, CREATED_BY } = FORM_FIELD_NAMES;
 
 export default function CreateNewTrip() {
+  const [dates, setDates] = useState({ startDate: null, endDate: null });
+  const [focusedInput, setFocusedInput] = useState(null);
+
   const [formFields, setFormFields] = useState({
-    TRIP_NAME: null,
-    CREATED_BY: null,
+    [TRIP_NAME]: "",
+    [CREATED_BY]: "",
   });
 
-  const handleFieldChange = (e) => {
+  const handleFieldChange = (e, correspondingFormField) => {
     const newFormFields = { ...formFields };
-    newFormFields.TRIP_NAME = e.target.value;
-    setFormFields = newFormFields;
+    newFormFields[`${correspondingFormField}`] = e.target.value;
+    setFormFields(newFormFields);
   };
 
   // =================REACT-DATES==============================
-  const [dates, setDates] = useState({ startDate: null, endDate: null });
-  const [focusedInput, setFocusedInput] = useState(null);
 
   const handleOnDateChange = ({ startDate, endDate }) => {
     setDates({ startDate, endDate });
@@ -42,6 +43,10 @@ export default function CreateNewTrip() {
     var formattedEndDate = endDate.format("dddd Do MMMM YYYY");
   }
   // =========================================================
+
+  const handleButtonClick = () => {
+    console.log(`add logic to switch screen`);
+  };
   return (
     <div className="container">
       <div className="row">
@@ -53,9 +58,8 @@ export default function CreateNewTrip() {
               handleFieldChange(e, TRIP_NAME);
             }}
             placeholder="Insert name of trip"
-          >
-            {formFields.TRIP_NAME}
-          </input>
+            value={formFields.TRIP_NAME}
+          />
         </div>
         <div className="col">
           <p>Created By:</p>
@@ -65,20 +69,17 @@ export default function CreateNewTrip() {
               handleFieldChange(e, CREATED_BY);
             }}
             placeholder="Insert email address"
-          >
-            {formFields.CREATED_BY}
-          </input>
+            value={formFields.CREATED_BY}
+          />
         </div>
       </div>
       <div className="row">
         <div className="col">
-          <div className="App">
-            <h1>Hello CodeSandbox</h1>
-            <h2>Start editing to see some magic happen!</h2>
+          <div className="react-date-container">
             {startDate && endDate && (
               <div>
-                <h4>from: {formattedStartDate}</h4>
-                <h4>to: {formattedEndDate}</h4>
+                <p>Start: {formattedStartDate}</p>
+                <p>End: {formattedEndDate}</p>
               </div>
             )}
             <DateRangePicker
@@ -89,12 +90,17 @@ export default function CreateNewTrip() {
               onDatesChange={handleOnDateChange} // PropTypes.func.isRequired,
               focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
               onFocusChange={(focusedInput) => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
+              // optionals:
+              required={true}
+              showClearDates={true}
             />
           </div>
         </div>
       </div>
       <div className="row">
-        <div className="col"></div>
+        <div className="col">
+          <Button onClick={handleButtonClick}>Select routes</Button>
+        </div>
       </div>
     </div>
   );
