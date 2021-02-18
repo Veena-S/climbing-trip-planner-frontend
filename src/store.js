@@ -5,7 +5,7 @@ import axios from 'axios'
 // we moved all of this data from the app component into the store
 export const initialState ={
   trips: {}, // TripId: TripData, including respective routes array
-  
+  currentTripId: 0,
 }
 
 // just like the todo app, define each action we want to do on the
@@ -46,8 +46,8 @@ export function tripReducer(state, action){
       return {...state, trips: action.payload.trips};
 
     case SELECT_TRIP:
-      const currentTripIndex = action.payload.tripIndex;
-      return {...state, currentTripIndex};
+      const currentTripId = action.payload.tripId;
+      return {...state, currentTripId};
 
     default:
       return state;
@@ -94,11 +94,11 @@ export function loadTripsAction(trips) {
     }
   };
 }
-export function selectTripAction(tripIndex) {
+export function selectTripAction(tripId) {
   return {
     type: SELECT_TRIP,
     payload: {
-      tripIndex
+      tripId
     }
   };
 }
