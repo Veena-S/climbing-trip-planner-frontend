@@ -1,12 +1,12 @@
-import React, {useState, useContext, useReducer} from 'react'
+import React, { useState, useContext, useEffect, useReducer} from 'react'
 import axios from 'axios'
 
 // create an object that represents all the data contained in the app
 // we moved all of this data from the app component into the store
 export const initialState ={
-  trips: {}, // TripId: TripData, including respective routes array
-  currentTripId: 0, // Id of the currently selected trip
-  uniqueRouteNames: [], // Array of unique route names
+  trips: [], // TripId: TripData, including respective routes array
+  currentTripId: 0,
+  uniqueRouteNames: [],
 }
 
 // just like the todo app, define each action we want to do on the
@@ -146,7 +146,7 @@ export function selectTripAction(tripId) {
 export const TripContext = React.createContext(null);
 
 // create the provider to use below
-const {Provider} = TripContext;
+const { Provider } = TripContext;
 
 
 // export a provider HOC that contains the initalized reducer
@@ -157,10 +157,14 @@ export function TripProvider({children}) {
   // create the dispatch function in one place and put in into context
   // where it will be accessible to all of the children
   const [store, dispatch] = useReducer(tripReducer, initialState);
-  
+  useEffect(() => {
+    axios.get(`${BACKEND_URL}/home`).then((result) => {
+      dispatch(loadTripsAction(result.data.trips));
+    });
+  }, []);
   // surround the children elements with
   // the context provider we created above
-  return (<Provider value={{store, dispatch}}>
+  return (<Provider value={{ store, dispatch }}>
       {children}
     </Provider>)
 }

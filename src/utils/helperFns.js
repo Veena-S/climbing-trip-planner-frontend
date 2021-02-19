@@ -22,7 +22,7 @@ export const TRIPS_STATUS = Object.freeze({
 export function getTripStatus(tripStartDate, tripEndDate){
   let todayDate = new Date();
   // If todays'date is Before trips start date, it is an upcoming trip
-  if((moment(todayDate).isBefore(tripStartDate)) && (moment(tripStartDate).isBefore(tripEndDate)))
+  if((moment(todayDate).isBefore(tripStartDate)))
   {
     return TRIPS_STATUS.UPCOMING_TRIP;
   }
