@@ -18,7 +18,7 @@ export default function OrderRoutes() {
   // order control (below) is either UP or DOWN
   const handleOrdering = (arrayIndex, orderControl) => {
     // perform shallow copy to avoid modifying state directly
-    preferredOrder = [...newPreferredOrder];
+    const newPreferredOrder = [...preferredOrder];
 
     switch (orderControl) {
       case UP: //move the selected route up by one in the index
@@ -29,6 +29,8 @@ export default function OrderRoutes() {
         const elementToMoveUp = newPreferredOrder.splice(arrayIndex, 1);
         // insert el back into newPreferredOrder but at (original Index -1)
         newPreferredOrder.splice(arrayIndex - 1, 1, ...elementToMoveUp);
+        break;
+
       case DOWN:
         // if alr at the end of the array, don't do anything
         if (arrayIndex === newPreferredOrder.length - 1) return;
@@ -37,12 +39,14 @@ export default function OrderRoutes() {
         const elementToMoveDown = newPreferredOrder.splice(arrayIndex, 1);
         // insert el back into newPreferredOrder but at (original Index -1)
         newPreferredOrder.splice(arrayIndex + 1, 1, ...elementToMoveDown);
+        break;
 
       default:
         return;
     }
     setpreferredOrder(newPreferredOrder);
   };
+
   const orderRoutesAccToUserPreference = () =>
     preferredOrder.map((route, index) => {
       return (
