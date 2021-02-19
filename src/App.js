@@ -8,7 +8,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import {TripProvider} from "./store"
+import { TripProvider } from "./store"
 
 function App() {
   return (
