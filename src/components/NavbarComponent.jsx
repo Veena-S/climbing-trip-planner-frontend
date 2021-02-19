@@ -8,7 +8,7 @@ export default function NavbarComponent() {
     <>
       <Navbar bg="light" expand="lg">
         <LinkContainer to="/home">
-          <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+          <Navbar.Brand>Climbing Planner</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

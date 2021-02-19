@@ -5,7 +5,6 @@ export default function Card({title, body}) {
   return (
     <div className="card-container">
       <div className="image-container">
-
       </div>
      <div className="card-content">
      <div className="card-title">
