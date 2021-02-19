@@ -1,11 +1,12 @@
-import React, {useState, useContext, useReducer} from 'react'
+import React, { useState, useContext, useEffect, useReducer} from 'react'
 import axios from 'axios'
 
 // create an object that represents all the data contained in the app
 // we moved all of this data from the app component into the store
 export const initialState ={
-  trips: {}, // TripId: TripData, including respective routes array
-  
+  trips: [], // TripId: TripData, including respective routes array
+  currentTripId: 0,
+  uniqueRouteNames: [],
 }
 
 // just like the todo app, define each action we want to do on the
@@ -15,6 +16,8 @@ const REMOVE_TRIP = "REMOVE_TRIP";
 const ADD_ROUTE = "ADD_ROUTE";
 const LOAD_TRIPS = "LOAD_TRIPS";
 const SELECT_TRIP = "SELECT_TRIP";
+const LOAD_ROUTE_NAMES = "LOAD_ROUTE_NAMES";
+const ADD_ROUTE_NAME = "ADD_ROUTE_NAME";
 
 // define the matching reducer function
 export function tripReducer(state, action){
@@ -45,9 +48,17 @@ export function tripReducer(state, action){
     case LOAD_TRIPS:
       return {...state, trips: action.payload.trips};
 
+    case LOAD_ROUTE_NAMES:
+      return {...state, uniqueRouteNames: [...new Set(action.payload.routeNames)]};
+
+    case ADD_ROUTE_NAME:
+      let routeNames = [...state.uniqueRouteNames];
+      routeNames.push(action.payload.routeName);
+      return {...state, uniqueRouteNames: [...new Set(routeNames)]};
+
     case SELECT_TRIP:
-      const currentTripIndex = action.payload.tripIndex;
-      return {...state, currentTripIndex};
+      const currentTripId = action.payload.tripId;
+      return {...state, currentTripId};
 
     default:
       return state;
@@ -94,11 +105,30 @@ export function loadTripsAction(trips) {
     }
   };
 }
-export function selectTripAction(tripIndex) {
+
+export function loadUniqueRouteNamesAction(routeNames){
+  return {
+    type: LOAD_ROUTE_NAMES,
+    payload:{
+      routeNames
+    }
+  }
+}
+
+export function addNewRouteNameAction(routeName){
+  return {
+    type: ADD_ROUTE_NAME,
+    payload:{
+      routeName
+    }
+  }
+}
+
+export function selectTripAction(tripId) {
   return {
     type: SELECT_TRIP,
     payload: {
-      tripIndex
+      tripId
     }
   };
 }
@@ -116,7 +146,7 @@ export function selectTripAction(tripIndex) {
 export const TripContext = React.createContext(null);
 
 // create the provider to use below
-const {Provider} = TripContext;
+const { Provider } = TripContext;
 
 
 // export a provider HOC that contains the initalized reducer
@@ -127,10 +157,14 @@ export function TripProvider({children}) {
   // create the dispatch function in one place and put in into context
   // where it will be accessible to all of the children
   const [store, dispatch] = useReducer(tripReducer, initialState);
-  
+  useEffect(() => {
+    axios.get(`${BACKEND_URL}/home`).then((result) => {
+      dispatch(loadTripsAction(result.data.trips));
+    });
+  }, []);
   // surround the children elements with
   // the context provider we created above
-  return (<Provider value={{store, dispatch}}>
+  return (<Provider value={{ store, dispatch }}>
       {children}
     </Provider>)
 }
@@ -158,6 +192,12 @@ export function loadTrips(dispatch){
   axios.get(BACKEND_URL+'/trips').then((result) => {
     dispatch(loadTripsAction(result.data.trips));
   });
+}
+
+export function loadUniqueRouteNames(dispatch){
+  axios.get(BACKEND_URL + '/route-names').then((result) => {
+    dispatch(loadUniqueRouteNamesAction(result.data.routeNames));
+  })
 }
 
 export function createTrip(dispatch, trip){

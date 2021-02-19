@@ -1,16 +1,28 @@
 // This file holds the helper functions that will be used across the source code
 import moment from 'moment';
 
+export const ROUTE_DIFFICULTIES = [1, 2, 3, 4, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6,
+  5.7, 5.8, 5.9, 5.10, 5.11, 5.12, 5.13, 5.14, 5.15];
+
+  /**
+   * Status that defines the state of a trip
+   * Status defined are Past, Active or Upcoming
+   */
 export const TRIPS_STATUS = Object.freeze({
   UPCOMING_TRIP: 0,
   ACTIVE_TRIP: 1,
   PAST_TRIP: 2,
 });
 
+/**
+ * 
+ * @param {Date/String} tripStartDate - Start date of the trip
+ * @param {Date/String} tripEndDate - End date of the trip
+ */
 export function getTripStatus(tripStartDate, tripEndDate){
   let todayDate = new Date();
   // If todays'date is Before trips start date, it is an upcoming trip
-  if((moment(todayDate).isBefore(tripStartDate)) && (moment(tripStartDate).isBefore(tripEndDate)))
+  if((moment(todayDate).isBefore(tripStartDate)))
   {
     return TRIPS_STATUS.UPCOMING_TRIP;
   }
