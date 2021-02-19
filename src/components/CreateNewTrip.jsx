@@ -1,27 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import "react-dates/initialize";
-import {
-  DateRangePicker,
-  SingleDatePicker,
-  DayPickerRangeController,
-} from "react-dates";
+import { createNewTripAction, TripContext } from "../store.js";
+import { DateRangePicker } from "react-dates";
 import "react-dates/lib/css/_datepicker.css";
 
 const FORM_FIELD_NAMES = {
-  TRIP_NAME: "fTripName",
-  CREATED_BY: "fCreatedBy",
+  TRIP_NAME: "name",
+  CREATED_BY: "creator",
 };
 const { TRIP_NAME, CREATED_BY } = FORM_FIELD_NAMES;
 
 export default function CreateNewTrip() {
-  const [dates, setDates] = useState({ startDate: null, endDate: null });
-  const [focusedInput, setFocusedInput] = useState(null);
+  const { store, dispatch } = useContext(TripContext);
+  const { newTripData } = store.tripFormData;
 
   const [formFields, setFormFields] = useState({
     [TRIP_NAME]: "",
     [CREATED_BY]: "",
   });
+
+  const [dates, setDates] = useState({ startDate: null, endDate: null });
+  const [focusedInput, setFocusedInput] = useState(null);
 
   const handleFieldChange = (e, correspondingFormField) => {
     const newFormFields = { ...formFields };
@@ -43,10 +43,20 @@ export default function CreateNewTrip() {
     var formattedEndDate = endDate.format("dddd Do MMMM YYYY");
   }
   // =========================================================
-
   const handleButtonClick = () => {
     console.log(`add logic to switch screen`);
+    dispatch(
+      createNewTripAction({
+        name: formFields[TRIP_NAME],
+        creator: formFields[CREATED_BY],
+        startDate: dates.startDate,
+        endDate: dates.endDate,
+      })
+    );
+    console.log(`newTripData is:`);
+    console.log(newTripData);
   };
+
   return (
     <div className="container">
       <div className="row">

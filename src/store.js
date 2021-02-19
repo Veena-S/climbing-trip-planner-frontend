@@ -7,6 +7,11 @@ export const initialState ={
   trips: [], // TripId: TripData, including respective routes array
   currentTripIndex: 0,
   uniqueRouteNames: [],
+  tripFormData: {
+   newTripData:{},
+   newRouteData:[],// [{name, difficulty}]
+   routeOrder:[],
+  }
 }
 
 // just like the todo app, define each action we want to do on the
@@ -18,35 +23,42 @@ const LOAD_TRIPS = "LOAD_TRIPS";
 const SELECT_TRIP = "SELECT_TRIP";
 const LOAD_ROUTE_NAMES = "LOAD_ROUTE_NAMES";
 const ADD_ROUTE_NAME = "ADD_ROUTE_NAME";
+const CREATE_NEW_TRIP = 'CREATE_NEW_TRIP';
+const CREATE_ROUTE_NEW_TRIP = "CREATE_ROUTE_NEW_TRIP";
+const ROUTE_ORDER = 'ROUTE_ORDER'
 
 // define the matching reducer function
 export function tripReducer(state, action){
   switch(action.type){
     case ADD_TRIP:
-      let newTrip = {};
-      newTrip[action.payload.trip.id] = action.payload.trip;
-      return {...state, trips: {...state.trips, ...newTrip}};
+      return {...state, trips: [...state.trips, ...action.payload.trip]};
       
     case REMOVE_TRIP:
       // let cart = state.filter((_item, i) => action.payload.cartIttemIndex !== i);
       // return {...state, cart};
-      let currentTrips = {...state.trips};
-      delete currentTrips[action.payload.tripId]
-      return {...state, trips: {...currentTrips}}
+      let currentTrips = [...state.trips];
+      // delete currentTrips[action.payload.tripId]
+      return {...state, trips: [...currentTrips]}
 
     case ADD_ROUTE:
-      let trips = {...state.trips};
-      let currRoutes = trips[action.payload.route.tripId].routes
+      let trips = [...state.trips];
+      const tripIndex = trips.findIndex((currTrip) => {
+        if(currTrip.tripId === action.payload.route.tripId){
+          return true;
+        }
+        return false;
+      })
+      let currRoutes = trips[tripIndex].routes
       if(undefined === currRoutes){
-        trips[action.payload.route.tripId] = [action.payload.route];
+        trips[tripIndex] = [action.payload.route];
       }
       else{
-        trips[action.payload.route.tripId].push(action.payload.route);
+        trips[tripIndex].push(action.payload.route);
       }
-      return {...state, trips:{...state.trips}};
+      return {...state, trips:[...state.trips]};
 
     case LOAD_TRIPS:
-      return {...state, trips: action.payload.trips};
+      return {...state, trips: [action.payload.trips]};
 
     case LOAD_ROUTE_NAMES:
       return {...state, uniqueRouteNames: [...new Set(action.payload.routeNames)]};
@@ -59,6 +71,22 @@ export function tripReducer(state, action){
     case SELECT_TRIP:
       const currentTripIndex = action.payload.currentTripIndex;
       return {...state, currentTripIndex};
+
+    case CREATE_NEW_TRIP:
+        const newTripData  = {...action.payload.trip};
+        return {...state, tripFormData:{newTripData}};
+
+    case CREATE_ROUTE_NEW_TRIP:
+      return{...state, 
+        tripFormData:{newTripData: {...state.tripFormData.newTripData},
+                      newRouteData:[...action.payload.newRoutesList],
+                      routeOrder:{...state.tripFormData.routeOrder}}};
+
+// tripFormData: {
+//    newTripData:{},
+//    newRouteData:[],// [{name, difficulty}]
+//    routeOrder:[],
+//   }
 
     default:
       return state;
@@ -131,6 +159,34 @@ export function selectTripAction(tripIndex) {
       tripIndex
     }
   };
+}
+
+export function createNewTripAction(trip) {
+  console.log(trip);
+  console.log({...trip})
+  return {
+    type: CREATE_NEW_TRIP,
+    payload: {
+      trip
+    }
+  };
+}
+
+export function createRoutesForNewTrip(newRoutesList){
+  return{
+    type: CREATE_ROUTE_NEW_TRIP,
+    payload:{
+      newRoutesList
+    }
+  }
+}
+export function routeOrderAction(routeOrder){
+  return{
+    type: ROUTE_ORDER,
+    payload:{
+      routeOrder
+    }
+  }
 }
 
 /****************************
