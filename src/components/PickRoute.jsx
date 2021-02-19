@@ -16,7 +16,7 @@ export default function PickRoute() {
   const defaultSelectValue = "Choose...";
 
   // Get all the unique roots from database
-  // useEffect(() => {loadUniqueRouteNames(dispatch)}, []);
+  useEffect(() => {loadUniqueRouteNames(dispatch)}, []);
   let {uniqueRouteNames} = store;
 
   const handleNewRouteName = (event) => {
@@ -28,6 +28,7 @@ export default function PickRoute() {
     setSelectedRouteName(event.target.value);
     if(event.target.value !== defaultSelectValue){
       setNewRouteDisable(true);
+      setNewRouteName("");
     }
     else{
       setNewRouteDisable(false);
@@ -57,15 +58,24 @@ export default function PickRoute() {
     console.log(JSON.stringify(addedRoutes))
   }
 
+  const handleDeleteRoute = (routeName) => {
+    let modifiedRoutes = {...routesAdded};
+    delete modifiedRoutes[routeName];
+    setRoutesAdded({...modifiedRoutes});
+  }
+
+  const handleContinue = () =>{
+    // To do
+  }
+
   // uniqueRouteNames.push('Route1');
   // uniqueRouteNames.push('Route2');
   
-  uniqueRouteNames = [defaultSelectValue, "Route-1", ...uniqueRouteNames];
+  uniqueRouteNames = [defaultSelectValue, ...uniqueRouteNames];
   console.log(uniqueRouteNames);
 
   return (
     <div className="container m-4 ml-auto">
-
       <div className="row input-group m-3">        
         <div className="col-3">
           <label htmlFor="select-route">Select a route: </label>
@@ -94,7 +104,7 @@ export default function PickRoute() {
 
       <div className="row input-group m-3">        
         <div className="col-3">
-          <label htmlFor="select-route">Select difficulty of route: </label>
+          <label htmlFor="select-route">Select route difficulty: </label>
         </div>
         <div className="col">
           <select id="select-route" class="form-select form-select-sm" aria-label=".form-select-sm" value={selectedDifficulty} onChange={handleSelectedDifficulty}>
@@ -112,9 +122,15 @@ export default function PickRoute() {
           <button type="button" className="btn btn-sm btn-dark" onClick={handleAddRoute}>Add Route</button>
         </div>
       </div>
-      
-      <div className="mt-5">
-        <h5 className="mb-4">Routes included in the trip</h5>
+
+      <div className="row m-3">
+        <div className="col">
+          <button type="button" className="btn btn-sm btn-secondary" onClick={handleContinue}>Continue</button>
+        </div>
+      </div>
+
+      <div className="container mt-5">
+        <h5 className="mb-4 text-center">Selected Routes</h5>
       <div className="row m-3 justify-content-center">
         <div className="col-2">
           <h6>No:</h6>
@@ -124,6 +140,9 @@ export default function PickRoute() {
         </div>
         <div className="col-2">
           <h6>Difficulty</h6>
+        </div>
+        <div className="col-2">
+          <h6>Delete</h6>
         </div>
         </div>
         
@@ -138,9 +157,11 @@ export default function PickRoute() {
             <div className="col-2">
               {routesAdded[newRoute]}
             </div>
+            <div className="col-2">
+              <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => (handleDeleteRoute(newRoute))}>Delete</button>
+            </div>
           </div>
         ))}
-      
       </div>
     </div>
   )
