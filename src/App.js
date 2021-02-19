@@ -21,7 +21,6 @@ function App() {
           <Route path='/createNewTrip' component={CreateNewTrip}/>
         </Switch>
       </Router>
-       
     </TripProvider>
   );
 }
