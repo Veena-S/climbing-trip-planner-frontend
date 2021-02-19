@@ -8,8 +8,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import {TripProvider} from "./store";
-import PickRoute from './components/PickRoute';
+import { TripProvider } from "./store"
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
           <Route path='/createNewTrip' component={CreateNewTrip}/>
         </Switch>
       </Router>
-       <PickRoute></PickRoute>
     </TripProvider>
   );
 }
