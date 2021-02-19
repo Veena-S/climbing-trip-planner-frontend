@@ -5,7 +5,7 @@ import axios from 'axios'
 // we moved all of this data from the app component into the store
 export const initialState ={
   trips: [], // TripId: TripData, including respective routes array
-  currentTripId: 0,
+  currentTripIndex: 0,
   uniqueRouteNames: [],
 }
 
@@ -57,8 +57,8 @@ export function tripReducer(state, action){
       return {...state, uniqueRouteNames: [...new Set(routeNames)]};
 
     case SELECT_TRIP:
-      const currentTripId = action.payload.tripId;
-      return {...state, currentTripId};
+      const currentTripIndex = action.payload.currentTripIndex;
+      return {...state, currentTripIndex};
 
     default:
       return state;
@@ -124,11 +124,11 @@ export function addNewRouteNameAction(routeName){
   }
 }
 
-export function selectTripAction(tripId) {
+export function selectTripAction(tripIndex) {
   return {
     type: SELECT_TRIP,
     payload: {
-      tripId
+      tripIndex
     }
   };
 }
