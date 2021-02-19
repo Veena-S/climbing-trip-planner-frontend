@@ -29,7 +29,6 @@ export default function OrderRoutes() {
         const elementToMoveUp = newPreferredOrder.splice(arrayIndex, 1);
         // insert el back into newPreferredOrder but at (original Index -1)
         newPreferredOrder.splice(arrayIndex - 1, 1, ...elementToMoveUp);
-
       case DOWN:
         // if alr at the end of the array, don't do anything
         if (arrayIndex === newPreferredOrder.length - 1) return;
