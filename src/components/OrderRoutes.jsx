@@ -111,7 +111,7 @@ export default function OrderRoutes({
             className="btn btn-sm btn-secondary"
             onClick={handleButtonClick}
           >
-            Review and submit
+            Review and submit ➡️
           </button>
         </div>
       </div>

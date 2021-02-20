@@ -1,11 +1,19 @@
 import React, { useState, useContext, useEffect } from "react";
-import { TripContext, loadUniqueRouteNames, createRoutesForNewTrip } from "../store.js";
+import {
+  TripContext,
+  loadUniqueRouteNames,
+  createRoutesForNewTrip,
+} from "../store.js";
 import { ROUTE_DIFFICULTIES } from "../utils/helperFns.js";
 
 /**
  * Component to add a new route or to update an existing route
  */
-export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteComp, setShowOrderRoutesComp}) {
+export default function PickRoute({
+  setShowCreateNewTripComp,
+  setShowPickRouteComp,
+  setShowOrderRoutesComp,
+}) {
   const { store, dispatch } = useContext(TripContext);
   let { uniqueRouteNames, tripFormData } = store;
   const [newRouteName, setNewRouteName] = useState("");
@@ -22,12 +30,15 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
     loadUniqueRouteNames(dispatch);
     // If data is already present in the new trip form,
     // Use that to fill the components
-    if((tripFormData.newRouteData !== undefined) && tripFormData.newRouteData.length !== 0){
+    if (
+      tripFormData.newRouteData !== undefined &&
+      tripFormData.newRouteData.length !== 0
+    ) {
       let existingAddedRoutes = {};
-      tripFormData.newRouteData.forEach((routeData) =>{
+      tripFormData.newRouteData.forEach((routeData) => {
         existingAddedRoutes[routeData.name] = routeData.difficulty;
-      })
-      setRoutesAdded({...existingAddedRoutes});
+      });
+      setRoutesAdded({ ...existingAddedRoutes });
       setRoutesTakenFromPrevData(true);
     }
   }, []);
@@ -76,20 +87,23 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
     setRoutesAdded({ ...modifiedRoutes });
   };
 
-  const makeListOfAddedRoutes = () =>{
+  const makeListOfAddedRoutes = () => {
     const newTripRoutes = [];
-    Object.keys(routesAdded).forEach((routeName) =>{
-      newTripRoutes.push({name: routeName, difficulty: routesAdded[routeName]})
-    })
+    Object.keys(routesAdded).forEach((routeName) => {
+      newTripRoutes.push({
+        name: routeName,
+        difficulty: routesAdded[routeName],
+      });
+    });
     return newTripRoutes;
-  }
+  };
 
   const handleEditTrip = () => {
     dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
     setShowCreateNewTripComp(true);
     setShowPickRouteComp(false);
     setShowOrderRoutesComp(false);
-  }
+  };
 
   const handleContinueOrderRoutes = () => {
     dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
@@ -97,7 +111,6 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
     setShowCreateNewTripComp(false);
     setShowPickRouteComp(false);
   };
-
 
   uniqueRouteNames = [defaultSelectValue, ...uniqueRouteNames];
   console.log(uniqueRouteNames);
@@ -170,7 +183,11 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
 
       <div className="row m-3">
         <div className="col">
-          <button  type="button" className="btn btn-sm btn-dark" onClick={handleAddRoute}>
+          <button
+            type="button"
+            className="btn btn-sm btn-dark"
+            onClick={handleAddRoute}
+          >
             Add Route
           </button>
         </div>
@@ -178,13 +195,21 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
 
       <div className="row m-3">
         <div className="col-6">
-          <button type="button" className="btn btn-sm btn-secondary" onClick={handleEditTrip}>
-            Edit Trip
+          <button
+            type="button"
+            className="btn btn-sm btn-secondary"
+            onClick={handleEditTrip}
+          >
+            ⬅️ Edit Trip
           </button>
         </div>
         <div className="col-6">
-          <button type="button" className="btn btn-sm btn-secondary" onClick={handleContinueOrderRoutes}>
-            Choose Routes Order
+          <button
+            type="button"
+            className="btn btn-sm btn-secondary"
+            onClick={handleContinueOrderRoutes}
+          >
+            Choose Routes Order ➡️
           </button>
         </div>
       </div>
