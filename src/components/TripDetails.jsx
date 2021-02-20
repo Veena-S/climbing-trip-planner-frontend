@@ -8,26 +8,6 @@ import { TripContext } from "../store.js";
 import DisplayTrip from './DisplayTrip.jsx'
 import { getTripStatus, TRIPS_STATUS } from "../utils/helperFns.js";
 
-
-/**
- *
- * @param {Object} tripData - Expects this data contains both the trip details and
- *                            data on related routes.
- * Expected structure:
- * tripData = {
- *    id: <trip_id>,
- *    name: <trip_name>,
- *    creator: <trip_creator>
- *    startDate: <start_date>
- *    endDate: <end_date>
- *    ....
- *    // routes will be an array of route objects associated with the trip
- *    routes: [ routeObj1, routeObj2...]
- * }
- *
- * Structure of route Obj
- * route = { id: <id>, name: <>, difficulty: <>, order: <>}
- */
 export default function TripDetails() {
   const { store, dispatch } = useContext(TripContext);
   const { trips, currentTripIndex } = store;

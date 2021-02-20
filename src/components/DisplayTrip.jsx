@@ -1,7 +1,29 @@
 
 import React from "react";
 
+
+/**
+ *
+ * @param {Object} tripData - Expects this data contains both the trip details and
+ *                            data on related routes.
+ * Expected structure:
+ * tripData = {
+ *    id: <trip_id>,
+ *    name: <trip_name>,
+ *    creator: <trip_creator>
+ *    startDate: <start_date>
+ *    endDate: <end_date>
+ *    ....
+ *    // routes will be an array of route objects associated with the trip
+ *    routes: [ routeObj1, routeObj2...]
+ * }
+ *
+ * Structure of route Obj
+ * route = { id: <id>, name: <>, difficulty: <>, order: <>}
+ */
+
 export default function DisplayTrip({tripData}) {
+  console.log(tripData);
   return (
     <div>
       <div className="row">{tripData.name}</div>
@@ -16,14 +38,14 @@ export default function DisplayTrip({tripData}) {
           <div className="col">Difficulty</div>
           <div className="col">Preference</div>
         </div>
-        {tripData.routes.map((singleRoute, index) => (
+        {tripData.routes !== undefined && ( tripData.routes.map((singleRoute, index) => (
           <div className="row">
             <div className="col">{index + 1}</div>
             <div className="col">{singleRoute.name}</div>
             <div className="col">{singleRoute.difficulty}</div>
             <div className="col">{singleRoute.order}</div>
           </div>
-        ))}
+        )))}
       </div>
     </div>
   );
