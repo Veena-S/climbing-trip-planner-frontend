@@ -30,7 +30,10 @@ export default function PickRoute({
     loadUniqueRouteNames(dispatch);
     // If data is already present in the new trip form,
     // Use that to fill the components
-    if((tripFormData.newRouteData !== undefined) && tripFormData.newRouteData.length !== 0){
+    if (
+      tripFormData.newRouteData !== undefined &&
+      tripFormData.newRouteData.length !== 0
+    ) {
       // let existingAddedRoutes = {};
       // tripFormData.newRouteData.forEach((routeData) =>{
       //   existingAddedRoutes[routeData.name] = routeData.difficulty;
@@ -79,8 +82,6 @@ export default function PickRoute({
     setSelectedRouteName(defaultSelectValue);
     setNewRouteName("");
     setNewRouteDisable(false);
-
-    
   };
 
   // To delete a recently added route from the list
@@ -88,26 +89,14 @@ export default function PickRoute({
     // let modifiedRoutes = { ...routesAdded };
     // delete modifiedRoutes[routeName];
     // setRoutesAdded({ ...modifiedRoutes });
-    
-    let modifiedRoutes =  [...routesAdded ];
+
+    let modifiedRoutes = [...routesAdded];
     console.log(`item to be removed: `);
-    console.log(modifiedRoutes[index])
+    console.log(modifiedRoutes[index]);
     modifiedRoutes.splice(index, 1);
-    setRoutesAdded([...modifiedRoutes])
+    setRoutesAdded([...modifiedRoutes]);
   };
 
-<<<<<<< HEAD
-  const makeListOfAddedRoutes = () => {
-    const newTripRoutes = [];
-    Object.keys(routesAdded).forEach((routeName) => {
-      newTripRoutes.push({
-        name: routeName,
-        difficulty: routesAdded[routeName],
-      });
-    });
-    return newTripRoutes;
-  };
-=======
   // const makeListOfAddedRoutes = () =>{
   //   const newTripRoutes = [];
   //   Object.keys(routesAdded).forEach((routeName) =>{
@@ -115,7 +104,6 @@ export default function PickRoute({
   //   })
   //   return newTripRoutes;
   // }
->>>>>>> main
 
   const handleEditTrip = () => {
     // dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
@@ -127,7 +115,7 @@ export default function PickRoute({
 
   const handleContinueOrderRoutes = () => {
     // dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
-    console.log(routesAdded.length)
+    console.log(routesAdded.length);
     dispatch(createRoutesForNewTrip([...routesAdded]));
     setShowOrderRoutesComp(true);
     setShowCreateNewTripComp(false);
@@ -206,7 +194,7 @@ export default function PickRoute({
         <div className="col">
           <button
             type="button"
-            className="btn btn-sm btn-dark"
+            className="btn btn-sm btn-primary"
             onClick={handleAddRoute}
           >
             Add Route
@@ -225,17 +213,12 @@ export default function PickRoute({
           </button>
         </div>
         <div className="col-6">
-<<<<<<< HEAD
           <button
             type="button"
             className="btn btn-sm btn-secondary"
             onClick={handleContinueOrderRoutes}
           >
             Choose Routes Order ➡️
-=======
-          <button type="button" className="btn btn-sm btn-dark" onClick={handleContinueOrderRoutes}>
-            Choose Routes Order
->>>>>>> main
           </button>
         </div>
       </div>

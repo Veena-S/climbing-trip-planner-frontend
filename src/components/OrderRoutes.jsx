@@ -118,16 +118,16 @@ export default function OrderRoutes({
             className="btn btn-sm btn-secondary"
             onClick={handleEditRoutes}
           >
-            Review and submit ➡️
+            ⬅️ Pick routes
           </button>
         </div>
         <div className="col">
           <button
             type="button"
-            className="btn btn-sm btn-dark"
+            className="btn btn-sm btn-secondary"
             onClick={handlePreview}
           >
-            Review and submit
+            Review and submit ➡️
           </button>
         </div>
       </div>
