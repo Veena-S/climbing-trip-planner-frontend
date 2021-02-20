@@ -12,7 +12,7 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
   const [newRouteDisable, setNewRouteDisable] = useState(false);
   const [selectedRouteName, setSelectedRouteName] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState(0);
-  const [routesAdded, setRoutesAdded] = useState({});
+  const [routesAdded, setRoutesAdded] = useState([]);
   const [routesTakenFromPrevData, setRoutesTakenFromPrevData] = useState(false);
   const defaultSelectValue = "Choose...";
 
@@ -23,11 +23,12 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
     // If data is already present in the new trip form,
     // Use that to fill the components
     if((tripFormData.newRouteData !== undefined) && tripFormData.newRouteData.length !== 0){
-      let existingAddedRoutes = {};
-      tripFormData.newRouteData.forEach((routeData) =>{
-        existingAddedRoutes[routeData.name] = routeData.difficulty;
-      })
-      setRoutesAdded({...existingAddedRoutes});
+      // let existingAddedRoutes = {};
+      // tripFormData.newRouteData.forEach((routeData) =>{
+      //   existingAddedRoutes[routeData.name] = routeData.difficulty;
+      // })
+      // setRoutesAdded({...existingAddedRoutes});
+      setRoutesAdded([...tripFormData.newRouteData]);
       setRoutesTakenFromPrevData(true);
     }
   }, []);
@@ -51,48 +52,62 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
   };
 
   const handleAddRoute = () => {
-    let addedRoutes = { ...routesAdded };
+    // let addedRoutes = { ...routesAdded };
     // Currently text box to enter new route is disabled.
+    let newRoute = {};
     if (newRouteDisable && selectedRouteName !== defaultSelectValue) {
-      addedRoutes[selectedRouteName] = selectedDifficulty;
+      // addedRoutes[selectedRouteName] = selectedDifficulty;
+      newRoute.name = selectedRouteName;
     } else {
       // It's new route
       if (newRouteName !== "") {
-        addedRoutes[newRouteName] = selectedDifficulty;
+        // addedRoutes[newRouteName] = selectedDifficulty;
+        newRoute.name = newRouteName;
       }
     }
-    setRoutesAdded({ ...addedRoutes });
+    newRoute.difficulty = selectedDifficulty;
+    // setRoutesAdded({ ...addedRoutes });
+    setRoutesAdded([...routesAdded, newRoute]);
     setSelectedRouteName(defaultSelectValue);
     setNewRouteName("");
     setNewRouteDisable(false);
 
-    console.log(JSON.stringify(addedRoutes));
+    
   };
 
   // To delete a recently added route from the list
-  const handleDeleteRoute = (routeName) => {
-    let modifiedRoutes = { ...routesAdded };
-    delete modifiedRoutes[routeName];
-    setRoutesAdded({ ...modifiedRoutes });
+  const handleDeleteRoute = (routeName, index) => {
+    // let modifiedRoutes = { ...routesAdded };
+    // delete modifiedRoutes[routeName];
+    // setRoutesAdded({ ...modifiedRoutes });
+    
+    let modifiedRoutes =  [...routesAdded ];
+    console.log(`item to be removed: `);
+    console.log(modifiedRoutes[index])
+    modifiedRoutes.splice(index, 1);
+    setRoutesAdded([...modifiedRoutes])
   };
 
-  const makeListOfAddedRoutes = () =>{
-    const newTripRoutes = [];
-    Object.keys(routesAdded).forEach((routeName) =>{
-      newTripRoutes.push({name: routeName, difficulty: routesAdded[routeName]})
-    })
-    return newTripRoutes;
-  }
+  // const makeListOfAddedRoutes = () =>{
+  //   const newTripRoutes = [];
+  //   Object.keys(routesAdded).forEach((routeName) =>{
+  //     newTripRoutes.push({name: routeName, difficulty: routesAdded[routeName]})
+  //   })
+  //   return newTripRoutes;
+  // }
 
   const handleEditTrip = () => {
-    dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
+    // dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
+    dispatch(createRoutesForNewTrip([...routesAdded]));
     setShowCreateNewTripComp(true);
     setShowPickRouteComp(false);
     setShowOrderRoutesComp(false);
   }
 
   const handleContinueOrderRoutes = () => {
-    dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
+    // dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
+    console.log(routesAdded.length)
+    dispatch(createRoutesForNewTrip([...routesAdded]));
     setShowOrderRoutesComp(true);
     setShowCreateNewTripComp(false);
     setShowPickRouteComp(false);
@@ -100,7 +115,6 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
 
 
   uniqueRouteNames = [defaultSelectValue, ...uniqueRouteNames];
-  console.log(uniqueRouteNames);
 
   return (
     <div className="container m-4 ml-auto">
@@ -183,7 +197,7 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
           </button>
         </div>
         <div className="col-6">
-          <button type="button" className="btn btn-sm btn-secondary" onClick={handleContinueOrderRoutes}>
+          <button type="button" className="btn btn-sm btn-dark" onClick={handleContinueOrderRoutes}>
             Choose Routes Order
           </button>
         </div>
@@ -206,7 +220,24 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
           </div>
         </div>
 
-        {Object.keys(routesAdded).map((newRoute, index) => (
+        {routesAdded.map((newRoute, index) => (
+          <div className="row m-3 justify-content-center">
+            <div className="col-2">{index + 1}</div>
+            <div className="col-4">{newRoute.name}</div>
+            <div className="col-2">{newRoute.difficulty}</div>
+            <div className="col-2">
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-danger"
+                onClick={() => handleDeleteRoute(newRoute, index)}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+
+        {/* {Object.keys(routesAdded).map((newRoute, index) => (
           <div className="row m-3 justify-content-center">
             <div className="col-2">{index + 1}</div>
             <div className="col-4">{newRoute}</div>
@@ -221,7 +252,7 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
               </button>
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

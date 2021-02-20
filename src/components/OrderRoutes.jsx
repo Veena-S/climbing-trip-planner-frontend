@@ -11,21 +11,26 @@ const handleOrdering = (arrayIndex, orderControl) => {
   }
 };
 
-export default function OrderRoutes({setShowCreateNewTripComp, setShowPickRouteComp, 
-                                      setShowOrderRoutesComp}) {
+export default function OrderRoutes({ setShowPickRouteComp, 
+                                      setShowOrderRoutesComp, setShowReviewComp}) {
 
   const { store, dispatch } = useContext(TripContext);
   let { tripFormData } = store;
 
-  const [preferredOrder, setpreferredOrder] = useState([
-    "insert axios of all the selected routes",
-  ]);
+  const [preferredOrder, setpreferredOrder] = useState(tripFormData.newRouteData);
 
   const handleEditRoutes = () => {
-    dispatch(routeOrderAction(preferredOrder))
-    setShowCreateNewTripComp(false);
+    dispatch(routeOrderAction(preferredOrder));
     setShowPickRouteComp(true);
     setShowOrderRoutesComp(false);
+    setShowReviewComp(false);
+  }
+
+  const handlePreview = () => {
+    dispatch(routeOrderAction(preferredOrder));
+    setShowPickRouteComp(false);
+    setShowOrderRoutesComp(false);
+    setShowReviewComp(true);
   }
 
   // order control (below) is either UP or DOWN
@@ -102,6 +107,9 @@ export default function OrderRoutes({setShowCreateNewTripComp, setShowPickRouteC
       <div className="row">
         <div className="col">
           <button type="button" className="btn btn-sm btn-secondary" onClick={handleEditRoutes}>Edit Routes</button>
+        </div>
+        <div className="col">
+          <button type="button" className="btn btn-sm btn-dark" onClick={handlePreview}>Preview</button>
         </div>
       </div>
     </div>

@@ -10,7 +10,6 @@ export const initialState ={
   tripFormData: {
    newTripData:{},
    newRouteData:[],// [{name, difficulty}]
-   routeOrder:[],
   }
 }
 
@@ -25,7 +24,8 @@ const LOAD_ROUTE_NAMES = "LOAD_ROUTE_NAMES";
 const ADD_ROUTE_NAME = "ADD_ROUTE_NAME";
 const CREATE_NEW_TRIP = 'CREATE_NEW_TRIP';
 const CREATE_ROUTE_NEW_TRIP = "CREATE_ROUTE_NEW_TRIP";
-const ROUTE_ORDER = 'ROUTE_ORDER'
+const MANAGE_ROUTE_ORDER = 'MANAGE_ROUTE_ORDER'
+const RESET_NEW_TRIP_DATA = "RESET_NEW_TRIP_DATA";
 
 // define the matching reducer function
 export function tripReducer(state, action){
@@ -81,18 +81,18 @@ export function tripReducer(state, action){
       {
         return{...state, 
         tripFormData:{newTripData: {...state.tripFormData.newTripData},
-                      newRouteData:[...action.payload.newRoutesList],
-                      routeOrder:{...state.tripFormData.routeOrder}}};
+                      newRouteData:[...action.payload.newRoutesList],}};
       }
       break;
-    case ROUTE_ORDER:
-      if(action.payload.routeOrder !== undefined){
+    case MANAGE_ROUTE_ORDER:
+      if(action.payload.newRoutesList !== undefined){
         return{...state, 
         tripFormData:{newTripData: {...state.tripFormData.newTripData},
-                      newRouteData:[...state.tripFormData.newRouteData],
-                      routeOrder:{...action.payload.routeOrder}}};
+                      newRouteData:[...action.payload.newRoutesList],}};
       }
       break;
+    case RESET_NEW_TRIP_DATA:
+      return {...state, tripFormData: {}};
 
 // tripFormData: {
 //    newTripData:{},
@@ -192,12 +192,19 @@ export function createRoutesForNewTrip(newRoutesList){
     }
   }
 }
-export function routeOrderAction(routeOrder){
+export function routeOrderAction(newRoutesList){
   return{
-    type: ROUTE_ORDER,
+    type: MANAGE_ROUTE_ORDER,
     payload:{
-      routeOrder
+      newRoutesList
     }
+  }
+}
+
+export function resetNewTripFormAction(){
+  return {
+    type: RESET_NEW_TRIP_DATA,
+    payload: {},
   }
 }
 
