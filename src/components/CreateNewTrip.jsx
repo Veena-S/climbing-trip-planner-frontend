@@ -1,9 +1,11 @@
-import React, { useState, useContext } from "react";
-import Button from "react-bootstrap/Button";
-import "react-dates/initialize";
+import React, { useState, useContext, useEffect } from "react";
 import { createNewTripAction, TripContext } from "../store.js";
-import { DateRangePicker } from "react-dates";
+import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
+import { DateRangePicker } from "react-dates";
+import Button from "react-bootstrap/Button";
+import PickRoute from "./PickRoute.jsx";
+import OrderRoutes from "./OrderRoutes.jsx";
 
 const FORM_FIELD_NAMES = {
   TRIP_NAME: "name",
@@ -11,9 +13,9 @@ const FORM_FIELD_NAMES = {
 };
 const { TRIP_NAME, CREATED_BY } = FORM_FIELD_NAMES;
 
-export default function CreateNewTrip() {
+export default function CreateNewTrip({ setShowPickRouteComp }) {
   const { store, dispatch } = useContext(TripContext);
-  const { newTripData } = store.tripFormData;
+  const { newTripData, newRouteData } = store.tripFormData;
 
   const [formFields, setFormFields] = useState({
     [TRIP_NAME]: "",
@@ -22,6 +24,22 @@ export default function CreateNewTrip() {
 
   const [dates, setDates] = useState({ startDate: null, endDate: null });
   const [focusedInput, setFocusedInput] = useState(null);
+
+  useEffect(() => {
+    setShowPickRouteComp(false);
+    // If data is already present in the new trip form,
+    // Use that to fill the components
+    if (newTripData !== undefined) {
+      setFormFields({
+        [TRIP_NAME]: newTripData[TRIP_NAME],
+        [CREATED_BY]: newTripData[CREATED_BY],
+      });
+      setDates({
+        startDate: newTripData.startDate,
+        endDate: newTripData.endDate,
+      });
+    }
+  }, []);
 
   const handleFieldChange = (e, correspondingFormField) => {
     const newFormFields = { ...formFields };
@@ -53,38 +71,39 @@ export default function CreateNewTrip() {
         endDate: dates.endDate,
       })
     );
-    console.log(`newTripData is:`);
-    console.log(newTripData);
+    setShowPickRouteComp(true);
   };
 
   return (
-    <div className="container">
+    <div className="container m-4 ml-auto">
       <div className="row">
         <div className="col">
           <p>Trip name</p>
           <input
+            className="mb-3"
             type="text"
             onChange={(e) => {
               handleFieldChange(e, TRIP_NAME);
             }}
             placeholder="Insert name of trip"
-            value={formFields.TRIP_NAME}
+            value={formFields[TRIP_NAME]}
           />
         </div>
         <div className="col">
           <p>Created By:</p>
           <input
+            className="mb-3"
             type="text"
             onChange={(e) => {
               handleFieldChange(e, CREATED_BY);
             }}
-            placeholder="Insert email address"
-            value={formFields.CREATED_BY}
+            placeholder="Insert name of user"
+            value={formFields[CREATED_BY]}
           />
         </div>
       </div>
       <div className="row">
-        <div className="col">
+        <div className="col mb-3">
           <div className="react-date-container">
             {startDate && endDate && (
               <div>
@@ -109,7 +128,9 @@ export default function CreateNewTrip() {
       </div>
       <div className="row">
         <div className="col">
-          <Button onClick={handleButtonClick}>Select routes</Button>
+          <Button className="btn-sm" onClick={handleButtonClick}>
+            Select routes
+          </Button>
         </div>
       </div>
     </div>
