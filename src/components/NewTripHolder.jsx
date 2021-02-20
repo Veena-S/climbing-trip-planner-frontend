@@ -16,14 +16,20 @@ export default function NewTripHolder() {
     <div className="container">
       {showCreateNewTripComp && (
         <div>
-        <CreateNewTrip setShowPickRouteComp={setShowPickRouteComp}></CreateNewTrip>
-      </div>
+          <CreateNewTrip
+            setShowPickRouteComp={setShowPickRouteComp}
+          ></CreateNewTrip>
+        </div>
       )}
       {showPickRouteComp && (
-      <div>
-        <PickRoute setShowCreateNewTripComp={setShowCreateNewTripComp} setShowPickRouteComp={setShowPickRouteComp} setShowOrderRoutesComp={setShowOrderRoutesComp}></PickRoute>
-      </div>)
-      }
+        <div>
+          <PickRoute
+            setShowCreateNewTripComp={setShowCreateNewTripComp}
+            setShowPickRouteComp={setShowPickRouteComp}
+            setShowOrderRoutesComp={setShowOrderRoutesComp}
+          ></PickRoute>
+        </div>
+      )}
       {showOrderRoutesComp && (
         <div>
           <OrderRoutes setShowPickRouteComp={setShowPickRouteComp} setShowOrderRoutesComp={setShowOrderRoutesComp} setShowReviewComp={setShowReviewComp}></OrderRoutes>
@@ -44,7 +50,5 @@ export default function NewTripHolder() {
       </div>
 
     </div>
-  )
-
-
+  );
 }

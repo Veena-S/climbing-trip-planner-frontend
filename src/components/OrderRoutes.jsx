@@ -4,20 +4,14 @@ import { TripContext, routeOrderAction } from "../store.js";
 const UP = "up";
 const DOWN = "down";
 
-const handleOrdering = (arrayIndex, orderControl) => {
-  switch (orderControl) {
-    case UP:
-    // i want to insert the arr el into the position before the current el
-  }
-};
-
 export default function OrderRoutes({ setShowPickRouteComp, 
                                       setShowOrderRoutesComp, setShowReviewComp}) {
 
   const { store, dispatch } = useContext(TripContext);
-  let { tripFormData } = store;
+  let { newRouteData } = store.tripFormData;
 
-  const [preferredOrder, setpreferredOrder] = useState(tripFormData.newRouteData);
+  // state is an array
+  const [preferredOrder, setpreferredOrder] = useState(newRouteData);
 
   const handleEditRoutes = () => {
     dispatch(routeOrderAction(preferredOrder));
@@ -36,27 +30,32 @@ export default function OrderRoutes({ setShowPickRouteComp,
   // order control (below) is either UP or DOWN
   const handleOrdering = (arrayIndex, orderControl) => {
     // perform shallow copy to avoid modifying state directly
+
     const newPreferredOrder = [...preferredOrder];
 
     switch (orderControl) {
+      // allow route to be moved down in the priority
       case UP: //move the selected route up by one in the index
         // if alr at index 0, don't do anything
         if (arrayIndex === 0) return;
 
         // Since index >0, remove element from array
         const elementToMoveUp = newPreferredOrder.splice(arrayIndex, 1);
+
         // insert el back into newPreferredOrder but at (original Index -1)
-        newPreferredOrder.splice(arrayIndex - 1, 1, ...elementToMoveUp);
+        newPreferredOrder.splice(arrayIndex - 1, 0, ...elementToMoveUp);
         break;
 
+      // allow route to be moved down in the priority
       case DOWN:
+        console.log("managing DOWN");
         // if alr at the end of the array, don't do anything
         if (arrayIndex === newPreferredOrder.length - 1) return;
 
         // Since not at the end, remove element from array
         const elementToMoveDown = newPreferredOrder.splice(arrayIndex, 1);
         // insert el back into newPreferredOrder but at (original Index -1)
-        newPreferredOrder.splice(arrayIndex + 1, 1, ...elementToMoveDown);
+        newPreferredOrder.splice(arrayIndex + 1, 0, ...elementToMoveDown);
         break;
 
       default:
@@ -64,52 +63,64 @@ export default function OrderRoutes({ setShowPickRouteComp,
     }
     setpreferredOrder(newPreferredOrder);
   };
-
-  const orderRoutesAccToUserPreference = () =>
+  // display routes; default display is random, subsequent display depends on how user prioriritise it
+  const DisplayedRoutes = () =>
     preferredOrder.map((route, index) => {
+      // return preferredOrder.map((route, index) => {
+      // 1 to offset 0 indexing of arrays
+      const startingIndex = index + 1;
       return (
         <div className="row">
-          <div className="col">{route.id}</div>
+          <div className="col">{startingIndex}</div>{" "}
           <div className="col">{route.name}</div>
           <div className="col">{route.difficulty}</div>
-          <div className="col">
+          <div className="col order-buttons">
             <button
-              className="order-up-button"
-              onClick={handleOrdering(index, UP)}
+              className="order-up-button "
+              onClick={() => handleOrdering(index, UP)}
             >
-              Up
+              ⬆️
             </button>
             <button
-              className="order-down-button"
-              onClick={handleOrdering(index, UP)}
+              className="order-down-button "
+              onClick={() => handleOrdering(index, DOWN)}
             >
-              {" "}
-              Down
+              ⬇️
             </button>
           </div>
         </div>
       );
     });
 
+  const handleButtonClick = () => {
+    console.log(`add logic to switch screen`);
+    dispatch(routeOrderAction({ preferredOrder }));
+    // setShowPickRouteComp(true);
+  };
+
   return (
     <div className=" container order-routes-container">
       <div className="row">
-        <div className="col table-headers">
-          <div> No. </div>
-          <div> Route </div>
-          <div> Difficulty </div>
-          <div>Preference</div>
-        </div>
+        <div className="col table-headers">No.</div>
+        <div className="col table-headers">Route</div>
+        <div className="col table-headers">Difficulty</div>
+        <div className="col table-headers">Preference</div>
       </div>
-      {orderRoutesAccToUserPreference()}
+      <DisplayedRoutes />
 
       {/* // To add the Back button for editing routes */}
       <div className="row">
         <div className="col">
-          <button type="button" className="btn btn-sm btn-secondary" onClick={handleEditRoutes}>Edit Routes</button>
+          <button
+            type="button"
+            className="btn btn-sm btn-secondary"
+            onClick={handleEditRoutes}
+          >
+            Edit
+          </button>
         </div>
         <div className="col">
-          <button type="button" className="btn btn-sm btn-dark" onClick={handlePreview}>Preview</button>
+          <button type="button" className="btn btn-sm btn-dark" onClick={handlePreview}>Review and submit</button>
         </div>
       </div>
     </div>

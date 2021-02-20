@@ -91,14 +91,9 @@ export function tripReducer(state, action){
                       newRouteData:[...action.payload.newRoutesList],}};
       }
       break;
+      
     case RESET_NEW_TRIP_DATA:
       return {...state, tripFormData: {}};
-
-// tripFormData: {
-//    newTripData:{},
-//    newRouteData:[],// [{name, difficulty}]
-//    routeOrder:[],
-//   }
 
     default:
       return state;
