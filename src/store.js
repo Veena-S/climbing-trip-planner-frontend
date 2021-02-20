@@ -5,8 +5,6 @@ import axios from 'axios'
 // we moved all of this data from the app component into the store
 export const initialState ={
   trips: [], // TripId: TripData, including respective routes array
-  currentTripIndex: 0,
-  routes: {},
   uniqueRouteNames: [],
   tripFormData: {
    newTripData:{},
@@ -33,7 +31,7 @@ const RESET_NEW_TRIP_DATA = "RESET_NEW_TRIP_DATA";
 export function tripReducer(state, action){
   switch(action.type){
     case ADD_TRIP:
-      return {...state, trips: [...state.trips, ...action.payload.trip]};
+      return {...state, trips: [...state.trips, action.payload.trip]};
       
     case REMOVE_TRIP:
       // let cart = state.filter((_item, i) => action.payload.cartIttemIndex !== i);
@@ -64,7 +62,7 @@ export function tripReducer(state, action){
 
     case LOAD_ROUTE_NAMES:
       return {...state, uniqueRouteNames: [...new Set(action.payload.routeNames)]};
-
+    
     case LOAD_ROUTES:
       let routes = {}
       action.payload.routes.forEach(route => {
@@ -252,7 +250,6 @@ export function TripProvider({children}) {
   // create the dispatch function in one place and put in into context
   // where it will be accessible to all of the children
   const [store, dispatch] = useReducer(tripReducer, initialState);
- 
   // surround the children elements with
   // the context provider we created above
   return (<Provider value={{ store, dispatch }}>
@@ -290,7 +287,6 @@ export function loadUniqueRouteNames(dispatch){
     dispatch(loadUniqueRouteNamesAction(result.data.routeNames));
   })
 }
-
 export function loadRoutes(dispatch) {
   axios.get(BACKEND_URL+'/routes').then((result) => {
     dispatch(loadRoutesAction(result.data.routes));
