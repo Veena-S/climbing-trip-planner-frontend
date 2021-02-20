@@ -6,13 +6,20 @@ export default function ReviewNewTrip({setShowOrderRoutesComp, setShowReviewComp
   const { store, dispatch } = useContext(TripContext);
   const { tripFormData } = store;
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [displayTripData, setDisplayTripData] = useState({
-    name: tripFormData.newTripData.name,
-    creator: tripFormData.newTripData.creator, 
-    startDate: tripFormData.newTripData.startDate, 
-    endDate: tripFormData.newTripData.endDate, 
-    routes: [...tripFormData.newRouteData],
-  });
+  const displayTripData = {name: tripFormData.newTripData.name,
+                            creator: tripFormData.newTripData.creator,
+                            startDate: tripFormData.newTripData.startDate,
+                            endDate: tripFormData.newTripData.endDate,
+                            routes: [...tripFormData.newRouteData],};
+
+  /**
+   * 
+    displayTripData.name: tripFormData.newTripData.name,
+    displayTripData.creator: tripFormData.newTripData.creator, 
+    displayTripData.startDate: tripFormData.newTripData.startDate, 
+    displayTripData.endDate: tripFormData.newTripData.endDate, 
+    displayTripData.routes: [...tripFormData.newRouteData],
+   */
 
   const handleEdit = () => {
     setShowOrderRoutesComp(true);
@@ -27,10 +34,16 @@ export default function ReviewNewTrip({setShowOrderRoutesComp, setShowReviewComp
     dispatch(resetNewTripFormAction());
   }
 
+
   return (
     <div className="container m-3 p-3">
-      {/* <DisplayTrip tripData={displayTripData}></DisplayTrip> */}
-      <div>
+      <div className="row mb-4">
+        <div className="col text-center">
+          <h4>New Trip Details</h4>
+        </div>
+      </div>
+      <DisplayTrip tripData={displayTripData}></DisplayTrip>
+      <div className="mt-4">
         <div className="row">
           <div className="col">
             <button type="button" className="btn btn-sm btn-secondary" onClick={handleEdit}>Edit</button>
