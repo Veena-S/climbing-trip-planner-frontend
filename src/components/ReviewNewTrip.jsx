@@ -4,22 +4,13 @@ import DisplayTrip from './DisplayTrip.jsx'
 
 export default function ReviewNewTrip({setShowOrderRoutesComp, setShowReviewComp}) {
   const { store, dispatch } = useContext(TripContext);
-  const { tripFormData } = store;
+  const { newTripData, newRouteData } = store.tripFormData;
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const displayTripData = {name: tripFormData.newTripData.name,
-                            creator: tripFormData.newTripData.creator,
-                            startDate: tripFormData.newTripData.startDate,
-                            endDate: tripFormData.newTripData.endDate,
-                            routes: [...tripFormData.newRouteData],};
-
-  /**
-   * x
-    displayTripData.name: tripFormData.newTripData.name,
-    displayTripData.creator: tripFormData.newTripData.creator, 
-    displayTripData.startDate: tripFormData.newTripData.startDate, 
-    displayTripData.endDate: tripFormData.newTripData.endDate, 
-    displayTripData.routes: [...tripFormData.newRouteData],
-   */
+  const displayTripData = { name: newTripData.name,
+                            creator: newTripData.creator,
+                            startDate: newTripData.startDate,
+                            endDate: newTripData.endDate,
+                            routes: [...newRouteData],};
 
   const handleEdit = () => {
     setShowOrderRoutesComp(true);
@@ -27,11 +18,11 @@ export default function ReviewNewTrip({setShowOrderRoutesComp, setShowReviewComp
   }
 
   const handleSubmit = () => {
-    // createTrip(dispatch, tripData).then((tripId) => {
-    //   console.log(`New trip Id: ${tripId}`);
-    //   setSubmitSuccess(true);
-    // })
-    dispatch(resetNewTripFormAction());
+    createTrip(dispatch, displayTripData).then((tripId) => {
+      console.log(`New trip Id: ${tripId}`);
+      setSubmitSuccess(true);
+      // dispatch(resetNewTripFormAction());
+    })
   }
 
 
@@ -53,9 +44,11 @@ export default function ReviewNewTrip({setShowOrderRoutesComp, setShowReviewComp
           </div>
         </div>
         {submitSuccess && (
-          <div class="alert alert-success" role="alert">
+          <div class="alert alert-secondary mt-4 alert-dismissible fade show" role="alert">
             New trip registered successfully!!!
+            {/* <button type="button" className="btn btn-close" data-bs-dismiss="alert" aria-label="Close"></button> */}
           </div>
+
         )}
       </div>
     </div>

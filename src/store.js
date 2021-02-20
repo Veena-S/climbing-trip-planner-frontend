@@ -31,7 +31,7 @@ const RESET_NEW_TRIP_DATA = "RESET_NEW_TRIP_DATA";
 export function tripReducer(state, action){
   switch(action.type){
     case ADD_TRIP:
-      return {...state, trips: [...state.trips, ...action.payload.trip]};
+      return {...state, trips: [...state.trips, action.payload.trip]};
       
     case REMOVE_TRIP:
       // let cart = state.filter((_item, i) => action.payload.cartIttemIndex !== i);
@@ -297,6 +297,7 @@ export function createTrip(dispatch, trip){
   return new Promise((resolve, reject) => {
     axios.post(BACKEND_URL+'/trip', trip).then((result) => {
       dispatch(addTripAction(result.data.trip));
+      dispatch(loadRoutesAction(result.data.routes))
       resolve(result.data.trip.id);
     });
   });
