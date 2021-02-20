@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { createNewTripAction, TripContext } from "../store.js";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";

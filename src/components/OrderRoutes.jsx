@@ -82,8 +82,6 @@ export default function OrderRoutes({
       return (
         <div className="row">
           {/* <div className="col">{route.id}</div> */}
-          {/* <div className="col">{route.name}</div>
-          <div className="col">{route.difficulty}</div> */}
           <div className="col">{route.name}</div>
           <div className="col">{route.difficulty}</div>
           <div className="col">
@@ -112,7 +110,7 @@ export default function OrderRoutes({
         <div className="col table-headers">Difficulty</div>
         <div className="col table-headers">Preference</div>
       </div>
-      {orderRoutesAccToUserPreference()}
+      <DisplayedRoutes />
 
       {/* // To add the Back button for editing routes */}
       <div className="row">
