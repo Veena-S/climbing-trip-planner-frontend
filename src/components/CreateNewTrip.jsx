@@ -1,9 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import "react-dates/initialize";
 import { createNewTripAction, TripContext } from "../store.js";
-import { DateRangePicker } from "react-dates";
+import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
+import { DateRangePicker } from "react-dates";
+import Button from "react-bootstrap/Button";
+import PickRoute from "./PickRoute.jsx";
+import OrderRoutes from "./OrderRoutes.jsx";
 
 const FORM_FIELD_NAMES = {
   TRIP_NAME: "name",
@@ -11,7 +13,7 @@ const FORM_FIELD_NAMES = {
 };
 const { TRIP_NAME, CREATED_BY } = FORM_FIELD_NAMES;
 
-export default function CreateNewTrip({setShowPickRouteComp}) {
+export default function CreateNewTrip({ setShowPickRouteComp }) {
   const { store, dispatch } = useContext(TripContext);
   const { newTripData } = store.tripFormData;
 
@@ -27,11 +29,17 @@ export default function CreateNewTrip({setShowPickRouteComp}) {
     setShowPickRouteComp(false);
     // If data is already present in the new trip form,
     // Use that to fill the components
-    if(newTripData !== undefined){
-      setFormFields({[TRIP_NAME]: newTripData[TRIP_NAME], [CREATED_BY]: newTripData[CREATED_BY]});
-      setDates({ startDate: newTripData.startDate, endDate: newTripData.endDate });
+    if (newTripData !== undefined) {
+      setFormFields({
+        [TRIP_NAME]: newTripData[TRIP_NAME],
+        [CREATED_BY]: newTripData[CREATED_BY],
+      });
+      setDates({
+        startDate: newTripData.startDate,
+        endDate: newTripData.endDate,
+      });
     }
-    }, [])
+  }, []);
 
   const handleFieldChange = (e, correspondingFormField) => {
     const newFormFields = { ...formFields };
@@ -63,7 +71,7 @@ export default function CreateNewTrip({setShowPickRouteComp}) {
         endDate: dates.endDate,
       })
     );
-    setShowPickRouteComp(true)
+    setShowPickRouteComp(true);
   };
 
   return (
@@ -71,7 +79,10 @@ export default function CreateNewTrip({setShowPickRouteComp}) {
       <div className="row">
         <div className="col">
           <p>Trip name</p>
-          <input className="mb-3" type="text"  onChange={(e) => {
+          <input
+            className="mb-3"
+            type="text"
+            onChange={(e) => {
               handleFieldChange(e, TRIP_NAME);
             }}
             placeholder="Insert name of trip"
@@ -80,7 +91,8 @@ export default function CreateNewTrip({setShowPickRouteComp}) {
         </div>
         <div className="col">
           <p>Created By:</p>
-          <input className="mb-3"
+          <input
+            className="mb-3"
             type="text"
             onChange={(e) => {
               handleFieldChange(e, CREATED_BY);
@@ -116,7 +128,9 @@ export default function CreateNewTrip({setShowPickRouteComp}) {
       </div>
       <div className="row">
         <div className="col">
-          <Button className="btn-sm" onClick={handleButtonClick}>Select routes</Button>
+          <Button className="btn-sm" onClick={handleButtonClick}>
+            Select routes
+          </Button>
         </div>
       </div>
     </div>
