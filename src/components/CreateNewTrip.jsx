@@ -1,9 +1,11 @@
 import React, { useState, useContext } from "react";
-import Button from "react-bootstrap/Button";
-import "react-dates/initialize";
 import { createNewTripAction, TripContext } from "../store.js";
-import { DateRangePicker } from "react-dates";
+import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
+import { DateRangePicker } from "react-dates";
+import Button from "react-bootstrap/Button";
+import PickRoute from "./PickRoute.jsx";
+import OrderRoutes from "./OrderRoutes.jsx";
 
 const FORM_FIELD_NAMES = {
   TRIP_NAME: "name",
@@ -112,6 +114,8 @@ export default function CreateNewTrip() {
           <Button onClick={handleButtonClick}>Select routes</Button>
         </div>
       </div>
+      <PickRoute />
+      <OrderRoutes />
     </div>
   );
 }
