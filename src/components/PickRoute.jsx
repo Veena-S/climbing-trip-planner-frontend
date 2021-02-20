@@ -1,24 +1,36 @@
 import React, { useState, useContext, useEffect } from "react";
-import { TripContext, loadUniqueRouteNames } from "../store.js";
+import { TripContext, loadUniqueRouteNames, createRoutesForNewTrip } from "../store.js";
 import { ROUTE_DIFFICULTIES } from "../utils/helperFns.js";
 
 /**
  * Component to add a new route or to update an existing route
  */
-export default function PickRoute() {
+export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteComp, setShowOrderRoutesComp}) {
   const { store, dispatch } = useContext(TripContext);
+  let { uniqueRouteNames, tripFormData } = store;
   const [newRouteName, setNewRouteName] = useState("");
   const [newRouteDisable, setNewRouteDisable] = useState(false);
   const [selectedRouteName, setSelectedRouteName] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState(0);
   const [routesAdded, setRoutesAdded] = useState({});
+  const [routesTakenFromPrevData, setRoutesTakenFromPrevData] = useState(false);
   const defaultSelectValue = "Choose...";
 
-  // Get all the unique roots from database
   useEffect(() => {
+    setShowCreateNewTripComp(false);
+    // Get all the unique roots from database
     loadUniqueRouteNames(dispatch);
+    // If data is already present in the new trip form,
+    // Use that to fill the components
+    if((tripFormData.newRouteData !== undefined) && tripFormData.newRouteData.length !== 0){
+      let existingAddedRoutes = {};
+      tripFormData.newRouteData.forEach((routeData) =>{
+        existingAddedRoutes[routeData.name] = routeData.difficulty;
+      })
+      setRoutesAdded({...existingAddedRoutes});
+      setRoutesTakenFromPrevData(true);
+    }
   }, []);
-  let { uniqueRouteNames } = store;
 
   const handleNewRouteName = (event) => {
     setNewRouteName(event.target.value);
@@ -57,18 +69,35 @@ export default function PickRoute() {
     console.log(JSON.stringify(addedRoutes));
   };
 
+  // To delete a recently added route from the list
   const handleDeleteRoute = (routeName) => {
     let modifiedRoutes = { ...routesAdded };
     delete modifiedRoutes[routeName];
     setRoutesAdded({ ...modifiedRoutes });
   };
 
-  const handleContinue = () => {
-    // To do
+  const makeListOfAddedRoutes = () =>{
+    const newTripRoutes = [];
+    Object.keys(routesAdded).forEach((routeName) =>{
+      newTripRoutes.push({name: routeName, difficulty: routesAdded[routeName]})
+    })
+    return newTripRoutes;
+  }
+
+  const handleEditTrip = () => {
+    dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
+    setShowCreateNewTripComp(true);
+    setShowPickRouteComp(false);
+    setShowOrderRoutesComp(false);
+  }
+
+  const handleContinueOrderRoutes = () => {
+    dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
+    setShowOrderRoutesComp(true);
+    setShowCreateNewTripComp(false);
+    setShowPickRouteComp(false);
   };
 
-  // uniqueRouteNames.push('Route1');
-  // uniqueRouteNames.push('Route2');
 
   uniqueRouteNames = [defaultSelectValue, ...uniqueRouteNames];
   console.log(uniqueRouteNames);
@@ -141,24 +170,21 @@ export default function PickRoute() {
 
       <div className="row m-3">
         <div className="col">
-          <button
-            type="button"
-            className="btn btn-sm btn-dark"
-            onClick={handleAddRoute}
-          >
+          <button  type="button" className="btn btn-sm btn-dark" onClick={handleAddRoute}>
             Add Route
           </button>
         </div>
       </div>
 
       <div className="row m-3">
-        <div className="col">
-          <button
-            type="button"
-            className="btn btn-sm btn-secondary"
-            onClick={handleContinue}
-          >
-            Continue
+        <div className="col-6">
+          <button type="button" className="btn btn-sm btn-secondary" onClick={handleEditTrip}>
+            Edit Trip
+          </button>
+        </div>
+        <div className="col-6">
+          <button type="button" className="btn btn-sm btn-secondary" onClick={handleContinueOrderRoutes}>
+            Choose Routes Order
           </button>
         </div>
       </div>
