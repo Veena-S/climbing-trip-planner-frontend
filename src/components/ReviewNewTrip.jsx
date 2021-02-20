@@ -12,25 +12,16 @@ export default function ReviewNewTrip({setShowOrderRoutesComp, setShowReviewComp
                             endDate: tripFormData.newTripData.endDate,
                             routes: [...tripFormData.newRouteData],};
 
-  /**
-   * 
-    displayTripData.name: tripFormData.newTripData.name,
-    displayTripData.creator: tripFormData.newTripData.creator, 
-    displayTripData.startDate: tripFormData.newTripData.startDate, 
-    displayTripData.endDate: tripFormData.newTripData.endDate, 
-    displayTripData.routes: [...tripFormData.newRouteData],
-   */
-
   const handleEdit = () => {
     setShowOrderRoutesComp(true);
     setShowReviewComp(false);
   }
 
   const handleSubmit = () => {
-    // createTrip(dispatch, tripData).then((tripId) => {
-    //   console.log(`New trip Id: ${tripId}`);
-    //   setSubmitSuccess(true);
-    // })
+    createTrip(dispatch, displayTripData).then((tripId) => {
+      console.log(`New trip Id: ${tripId}`);
+      setSubmitSuccess(true);
+    })
     dispatch(resetNewTripFormAction());
   }
 

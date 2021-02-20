@@ -301,6 +301,7 @@ export function createTrip(dispatch, trip){
   return new Promise((resolve, reject) => {
     axios.post(BACKEND_URL+'/trip', trip).then((result) => {
       dispatch(addTripAction(result.data.trip));
+      dispatch(loadRoutesAction(result.data.routes))
       resolve(result.data.trip.id);
     });
   });
