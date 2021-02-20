@@ -1,11 +1,19 @@
 import React, { useState, useContext, useEffect } from "react";
-import { TripContext, loadUniqueRouteNames, createRoutesForNewTrip } from "../store.js";
+import {
+  TripContext,
+  loadUniqueRouteNames,
+  createRoutesForNewTrip,
+} from "../store.js";
 import { ROUTE_DIFFICULTIES } from "../utils/helperFns.js";
 
 /**
  * Component to add a new route or to update an existing route
  */
-export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteComp, setShowOrderRoutesComp}) {
+export default function PickRoute({
+  setShowCreateNewTripComp,
+  setShowPickRouteComp,
+  setShowOrderRoutesComp,
+}) {
   const { store, dispatch } = useContext(TripContext);
   let { uniqueRouteNames, tripFormData } = store;
   const [newRouteName, setNewRouteName] = useState("");
@@ -22,7 +30,10 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
     loadUniqueRouteNames(dispatch);
     // If data is already present in the new trip form,
     // Use that to fill the components
-    if((tripFormData.newRouteData !== undefined) && tripFormData.newRouteData.length !== 0){
+    if (
+      tripFormData.newRouteData !== undefined &&
+      tripFormData.newRouteData.length !== 0
+    ) {
       // let existingAddedRoutes = {};
       // tripFormData.newRouteData.forEach((routeData) =>{
       //   existingAddedRoutes[routeData.name] = routeData.difficulty;
@@ -71,8 +82,6 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
     setSelectedRouteName(defaultSelectValue);
     setNewRouteName("");
     setNewRouteDisable(false);
-
-    
   };
 
   // To delete a recently added route from the list
@@ -80,12 +89,12 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
     // let modifiedRoutes = { ...routesAdded };
     // delete modifiedRoutes[routeName];
     // setRoutesAdded({ ...modifiedRoutes });
-    
-    let modifiedRoutes =  [...routesAdded ];
+
+    let modifiedRoutes = [...routesAdded];
     console.log(`item to be removed: `);
-    console.log(modifiedRoutes[index])
+    console.log(modifiedRoutes[index]);
     modifiedRoutes.splice(index, 1);
-    setRoutesAdded([...modifiedRoutes])
+    setRoutesAdded([...modifiedRoutes]);
   };
 
   // const makeListOfAddedRoutes = () =>{
@@ -102,17 +111,16 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
     setShowCreateNewTripComp(true);
     setShowPickRouteComp(false);
     setShowOrderRoutesComp(false);
-  }
+  };
 
   const handleContinueOrderRoutes = () => {
     // dispatch(createRoutesForNewTrip(makeListOfAddedRoutes()));
-    console.log(routesAdded.length)
+    console.log(routesAdded.length);
     dispatch(createRoutesForNewTrip([...routesAdded]));
     setShowOrderRoutesComp(true);
     setShowCreateNewTripComp(false);
     setShowPickRouteComp(false);
   };
-
 
   uniqueRouteNames = [defaultSelectValue, ...uniqueRouteNames];
 
@@ -184,7 +192,11 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
 
       <div className="row m-3">
         <div className="col">
-          <button  type="button" className="btn btn-sm btn-dark" onClick={handleAddRoute}>
+          <button
+            type="button"
+            className="btn btn-sm btn-primary"
+            onClick={handleAddRoute}
+          >
             Add Route
           </button>
         </div>
@@ -192,13 +204,21 @@ export default function PickRoute({setShowCreateNewTripComp, setShowPickRouteCom
 
       <div className="row m-3">
         <div className="col-6">
-          <button type="button" className="btn btn-sm btn-secondary" onClick={handleEditTrip}>
-            Edit Trip
+          <button
+            type="button"
+            className="btn btn-sm btn-secondary"
+            onClick={handleEditTrip}
+          >
+            ⬅️ Edit Trip
           </button>
         </div>
         <div className="col-6">
-          <button type="button" className="btn btn-sm btn-dark" onClick={handleContinueOrderRoutes}>
-            Choose Routes Order
+          <button
+            type="button"
+            className="btn btn-sm btn-secondary"
+            onClick={handleContinueOrderRoutes}
+          >
+            Choose Routes Order ➡️
           </button>
         </div>
       </div>

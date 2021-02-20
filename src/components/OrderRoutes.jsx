@@ -4,9 +4,11 @@ import { TripContext, routeOrderAction } from "../store.js";
 const UP = "up";
 const DOWN = "down";
 
-export default function OrderRoutes({ setShowPickRouteComp, 
-                                      setShowOrderRoutesComp, setShowReviewComp}) {
-
+export default function OrderRoutes({
+  setShowPickRouteComp,
+  setShowOrderRoutesComp,
+  setShowReviewComp,
+}) {
   const { store, dispatch } = useContext(TripContext);
   let { newRouteData } = store.tripFormData;
 
@@ -18,14 +20,14 @@ export default function OrderRoutes({ setShowPickRouteComp,
     setShowPickRouteComp(true);
     setShowOrderRoutesComp(false);
     setShowReviewComp(false);
-  }
+  };
 
   const handlePreview = () => {
     dispatch(routeOrderAction(preferredOrder));
     setShowPickRouteComp(false);
     setShowOrderRoutesComp(false);
     setShowReviewComp(true);
-  }
+  };
 
   // order control (below) is either UP or DOWN
   const handleOrdering = (arrayIndex, orderControl) => {
@@ -116,11 +118,17 @@ export default function OrderRoutes({ setShowPickRouteComp,
             className="btn btn-sm btn-secondary"
             onClick={handleEditRoutes}
           >
-            Edit
+            ⬅️ Pick routes
           </button>
         </div>
         <div className="col">
-          <button type="button" className="btn btn-sm btn-dark" onClick={handlePreview}>Review and submit</button>
+          <button
+            type="button"
+            className="btn btn-sm btn-secondary"
+            onClick={handlePreview}
+          >
+            Review and submit ➡️
+          </button>
         </div>
       </div>
     </div>
