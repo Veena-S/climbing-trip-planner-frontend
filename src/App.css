@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+.order-buttons {
+  display: flex;
+  flex-direction: column;
+}
+.order-up-button {
+  width: 30%;
+  background-color: transparent;
+  border: none;
+}
+.order-down-button {
+  width: 30%;
+  background-color: transparent;
+  border: none;
+}
+
+.order-routes-container:nth-child(even) {
+  background-color: lightblue;
+}

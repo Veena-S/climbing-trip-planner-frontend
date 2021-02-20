@@ -133,8 +133,6 @@ export default function CreateNewTrip({ setShowPickRouteComp }) {
           </Button>
         </div>
       </div>
-      <PickRoute />
-      <OrderRoutes />
     </div>
   );
 }
