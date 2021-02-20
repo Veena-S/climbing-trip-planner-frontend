@@ -13,7 +13,7 @@ export default function ReviewNewTrip({setShowOrderRoutesComp, setShowReviewComp
                             routes: [...tripFormData.newRouteData],};
 
   /**
-   * 
+   * x
     displayTripData.name: tripFormData.newTripData.name,
     displayTripData.creator: tripFormData.newTripData.creator, 
     displayTripData.startDate: tripFormData.newTripData.startDate, 
