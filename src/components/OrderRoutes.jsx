@@ -1,27 +1,36 @@
-import { updateLocale } from "moment";
-import React, { useState, useContext, useEffect } from "react";
-import { createNewTripAction, TripContext } from "../store.js";
-import PickRoute from "./PickRoute.jsx";
+import React, { useState, useContext } from "react";
+import { TripContext, routeOrderAction } from "../store.js";
 
 const UP = "up";
 const DOWN = "down";
 
-export default function OrderRoutes() {
-  const { store, dispatch } = useContext(TripContext);
-  const { newRouteData } = store.tripFormData;
+const handleOrdering = (arrayIndex, orderControl) => {
+  switch (orderControl) {
+    case UP:
+    // i want to insert the arr el into the position before the current el
+  }
+};
 
-  // create a state using the user-selected routes as a default ordering.
+export default function OrderRoutes({
+  setShowCreateNewTripComp,
+  setShowPickRouteComp,
+  setShowOrderRoutesComp,
+}) {
+  const { store, dispatch } = useContext(TripContext);
+  let { tripFormData } = store;
+
   const [preferredOrder, setpreferredOrder] = useState([
     { name: "a", difficulty: 1.2 },
     { name: "b", difficulty: 1.1 },
     { name: "c", difficulty: 2 },
   ]);
 
-  // const testArray = [
-  //   { name: "a", difficulty: 1.2 },
-  //   { name: "b", difficulty: 1.1 },
-  //   { name: "c", difficulty: 2 },
-  // ];
+  const handleEditRoutes = () => {
+    dispatch(routeOrderAction(preferredOrder));
+    setShowCreateNewTripComp(false);
+    setShowPickRouteComp(true);
+    setShowOrderRoutesComp(false);
+  };
 
   // order control (below) is either UP or DOWN
   const handleOrdering = (arrayIndex, orderControl) => {
@@ -103,7 +112,20 @@ export default function OrderRoutes() {
         <div className="col table-headers">Difficulty</div>
         <div className="col table-headers">Preference</div>
       </div>
-      <DisplayedRoutes />
+      {orderRoutesAccToUserPreference()}
+
+      {/* // To add the Back button for editing routes */}
+      <div className="row">
+        <div className="col">
+          <button
+            type="button"
+            className="btn btn-sm btn-secondary"
+            onClick={handleEditRoutes}
+          >
+            Edit Routes
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
