@@ -29,10 +29,10 @@ import { getTripStatus, TRIPS_STATUS } from "../utils/helperFns.js";
 export default function TripDetails() {
   const { store, dispatch } = useContext(TripContext);
   const { trips, currentTripIndex } = store;
-
+  console.log(trips, 'hi')
   const tripData = trips[currentTripIndex];
-
-  let isUpcomingTrip = ( TRIPS_STATUS.UPCOMING_TRIP === getTripStatus(tripData.startDate, tripData.endDate));
+  // console.log(tripData)
+  // let isUpcomingTrip = ( TRIPS_STATUS.UPCOMING_TRIP === getTripStatus(tripData.startDate, tripData.endDate));
 
   return (
     <div className="container m-3 p-3">
@@ -58,7 +58,7 @@ export default function TripDetails() {
         ))}
       </div>
       <div>
-        {isUpcomingTrip && (
+        {/* {isUpcomingTrip && (
           <div className="row">
             <div className="col">
               <button type="button" className="btn btn-sm btn-primary">
@@ -66,7 +66,7 @@ export default function TripDetails() {
               </button>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
