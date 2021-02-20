@@ -5,7 +5,6 @@ import axios from 'axios'
 // we moved all of this data from the app component into the store
 export const initialState ={
   trips: [], // TripId: TripData, including respective routes array
-  currentTripIndex: 0,
   uniqueRouteNames: [],
   tripFormData: {
    newTripData:{},
@@ -21,10 +20,12 @@ const ADD_ROUTE = "ADD_ROUTE";
 const LOAD_TRIPS = "LOAD_TRIPS";
 const SELECT_TRIP = "SELECT_TRIP";
 const LOAD_ROUTE_NAMES = "LOAD_ROUTE_NAMES";
+const LOAD_ROUTES = "LOAD_ROUTES"
 const ADD_ROUTE_NAME = "ADD_ROUTE_NAME";
 const CREATE_NEW_TRIP = 'CREATE_NEW_TRIP';
 const CREATE_ROUTE_NEW_TRIP = "CREATE_ROUTE_NEW_TRIP";
 const MANAGE_ROUTE_ORDER = 'MANAGE_ROUTE_ORDER'
+const RESET_NEW_TRIP_DATA = "RESET_NEW_TRIP_DATA";
 
 // define the matching reducer function
 export function tripReducer(state, action){
@@ -57,10 +58,21 @@ export function tripReducer(state, action){
       return {...state, trips:[...state.trips]};
 
     case LOAD_TRIPS:
-      return {...state, trips: [action.payload.trips]};
+      return {...state, trips: action.payload.trips};
 
     case LOAD_ROUTE_NAMES:
       return {...state, uniqueRouteNames: [...new Set(action.payload.routeNames)]};
+    
+    case LOAD_ROUTES:
+      let routes = {}
+      action.payload.routes.forEach(route => {
+        if (routes.hasOwnProperty(route.tripId)) {
+          routes[route.tripId].push(route) 
+        } else {
+          routes[route.tripId] = [route]
+        }
+      });
+      return { ...state, routes };
 
     case ADD_ROUTE_NAME:
       let routeNames = [...state.uniqueRouteNames];
@@ -73,27 +85,31 @@ export function tripReducer(state, action){
 
     case CREATE_NEW_TRIP:
         const newTripData  = {...action.payload.trip};
-        return {...state, tripFormData:{newTripData}};
+        let newRouteData = [];
+        if(state.tripFormData.newRouteData !== undefined){
+          newRouteData = [...state.tripFormData.newRouteData];
+        }
+        return {...state, tripFormData:{newTripData, newRouteData}};
 
     case CREATE_ROUTE_NEW_TRIP:
       if(action.payload.newRoutesList !== undefined)
       {
         return{...state, 
         tripFormData:{newTripData: {...state.tripFormData.newTripData},
-                      newRouteData:[...action.payload.newRoutesList],
-                      }};
+                      newRouteData:[...action.payload.newRoutesList],}};
       }
       break;
     case MANAGE_ROUTE_ORDER:
-      if(action.payload.newRoutesList !== undefined)
-      {
+      if(action.payload.newRoutesList !== undefined){
         return{...state, 
         tripFormData:{newTripData: {...state.tripFormData.newTripData},
-                      newRouteData:[...action.payload.newRoutesList],
-                      }};
+                      newRouteData:[...action.payload.newRoutesList],}};
       }
       break;
-    
+      
+    case RESET_NEW_TRIP_DATA:
+      return {...state, tripFormData: {}};
+
     default:
       return state;
   }
@@ -128,6 +144,14 @@ export function addRouteAction(route) {
     payload:{
       route
     }
+  };
+}
+export function loadRoutesAction(routes) {
+  return {
+    type: LOAD_ROUTES,
+    payload: {
+      routes,
+    },
   };
 }
 
@@ -195,6 +219,13 @@ export function routeOrderAction(newRoutesList){
   }
 }
 
+export function resetNewTripFormAction(){
+  return {
+    type: RESET_NEW_TRIP_DATA,
+    payload: {},
+  }
+}
+
 /****************************
  ****************************
  ***  Provider Code
@@ -219,11 +250,6 @@ export function TripProvider({children}) {
   // create the dispatch function in one place and put in into context
   // where it will be accessible to all of the children
   const [store, dispatch] = useReducer(tripReducer, initialState);
-  useEffect(() => {
-    axios.get(`${BACKEND_URL}/home`).then((result) => {
-      dispatch(loadTripsAction(result.data.trips));
-    });
-  }, []);
   // surround the children elements with
   // the context provider we created above
   return (<Provider value={{ store, dispatch }}>
@@ -260,6 +286,11 @@ export function loadUniqueRouteNames(dispatch){
   axios.get(BACKEND_URL + '/route-names').then((result) => {
     dispatch(loadUniqueRouteNamesAction(result.data.routeNames));
   })
+}
+export function loadRoutes(dispatch) {
+  axios.get(BACKEND_URL+'/routes').then((result) => {
+    dispatch(loadRoutesAction(result.data.routes));
+  });
 }
 
 export function createTrip(dispatch, trip){

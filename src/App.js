@@ -3,6 +3,7 @@ import NavbarComponent from './components/NavbarComponent'
 import HomePage from './components/HomePage'
 import NewTripHolder from './components/NewTripHolder'
 import ViewAll from  './components/ViewAll'
+
 import {
   BrowserRouter as Router,
   Switch,

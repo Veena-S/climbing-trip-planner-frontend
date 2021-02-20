@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import './Card.css'
 
-export default function Card({title, body}) {
+
+export default function Card({title, body, onClick}) {
+  
   return (
     <div className="card-container">
       <div className="image-container">
@@ -15,7 +17,7 @@ export default function Card({title, body}) {
       </div>
      </div>
       <div className="btn">
-        <button>
+        <button onClick={onClick}>
           <a>
             View more
           </a>
