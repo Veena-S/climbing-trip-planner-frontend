@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react'
-import { TripContext} from "../store.js";
+import React, {useContext, useEffect, useState} from 'react'
+import { TripContext, resetNewTripFormAction} from "../store.js";
 import CreateNewTrip from './CreateNewTrip.jsx'
 import PickRoute from './PickRoute.jsx'
 import OrderRoutes from './OrderRoutes.jsx'

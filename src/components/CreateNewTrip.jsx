@@ -15,7 +15,7 @@ const { TRIP_NAME, CREATED_BY } = FORM_FIELD_NAMES;
 
 export default function CreateNewTrip({ setShowPickRouteComp }) {
   const { store, dispatch } = useContext(TripContext);
-  const { newTripData } = store.tripFormData;
+  const { newTripData, newRouteData } = store.tripFormData;
 
   const [formFields, setFormFields] = useState({
     [TRIP_NAME]: "",

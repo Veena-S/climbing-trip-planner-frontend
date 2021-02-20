@@ -74,7 +74,11 @@ export function tripReducer(state, action){
 
     case CREATE_NEW_TRIP:
         const newTripData  = {...action.payload.trip};
-        return {...state, tripFormData:{newTripData}};
+        let newRouteData = [];
+        if(state.tripFormData.newRouteData !== undefined){
+          newRouteData = [...state.tripFormData.newRouteData];
+        }
+        return {...state, tripFormData:{newTripData, newRouteData}};
 
     case CREATE_ROUTE_NEW_TRIP:
       if(action.payload.newRoutesList !== undefined)
