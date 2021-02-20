@@ -1,7 +1,6 @@
 import './App.css';
 import NavbarComponent from './components/NavbarComponent'
 import HomePage from './components/HomePage'
-import CreateNewTrip from './components/CreateNewTrip'
 import NewTripHolder from './components/NewTripHolder'
 import ViewAll from  './components/ViewAll'
 import {
