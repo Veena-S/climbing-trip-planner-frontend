@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { TripContext, routeOrderAction } from "../store.js";
 
 const UP = "up";
 const DOWN = "down";
@@ -10,10 +11,22 @@ const handleOrdering = (arrayIndex, orderControl) => {
   }
 };
 
-export default function OrderRoutes() {
+export default function OrderRoutes({setShowCreateNewTripComp, setShowPickRouteComp, 
+                                      setShowOrderRoutesComp}) {
+
+  const { store, dispatch } = useContext(TripContext);
+  let { tripFormData } = store;
+
   const [preferredOrder, setpreferredOrder] = useState([
     "insert axios of all the selected routes",
   ]);
+
+  const handleEditRoutes = () => {
+    dispatch(routeOrderAction(preferredOrder))
+    setShowCreateNewTripComp(false);
+    setShowPickRouteComp(true);
+    setShowOrderRoutesComp(false);
+  }
 
   // order control (below) is either UP or DOWN
   const handleOrdering = (arrayIndex, orderControl) => {
@@ -84,6 +97,13 @@ export default function OrderRoutes() {
         </div>
       </div>
       {orderRoutesAccToUserPreference()}
+
+      {/* // To add the Back button for editing routes */}
+      <div className="row">
+        <div className="col">
+          <button type="button" className="btn btn-sm btn-secondary" onClick={handleEditRoutes}>Edit Routes</button>
+        </div>
+      </div>
     </div>
   );
 }

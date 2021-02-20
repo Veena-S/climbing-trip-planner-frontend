@@ -77,10 +77,22 @@ export function tripReducer(state, action){
         return {...state, tripFormData:{newTripData}};
 
     case CREATE_ROUTE_NEW_TRIP:
-      return{...state, 
+      if(action.payload.newRoutesList !== undefined)
+      {
+        return{...state, 
         tripFormData:{newTripData: {...state.tripFormData.newTripData},
                       newRouteData:[...action.payload.newRoutesList],
                       routeOrder:{...state.tripFormData.routeOrder}}};
+      }
+      break;
+    case ROUTE_ORDER:
+      if(action.payload.routeOrder !== undefined){
+        return{...state, 
+        tripFormData:{newTripData: {...state.tripFormData.newTripData},
+                      newRouteData:[...state.tripFormData.newRouteData],
+                      routeOrder:{...action.payload.routeOrder}}};
+      }
+      break;
 
 // tripFormData: {
 //    newTripData:{},
