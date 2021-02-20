@@ -5,12 +5,12 @@ import axios from 'axios'
 // we moved all of this data from the app component into the store
 export const initialState ={
   trips: [], // TripId: TripData, including respective routes array
-  currentTripIndex: 0,
   routes: {},
   uniqueRouteNames: [],
   tripFormData: {
    newTripData:{},
    newRouteData:[],// [{name, difficulty}]
+   routeOrder:[],
   }
 }
 
@@ -26,8 +26,7 @@ const LOAD_ROUTES = "LOAD_ROUTES"
 const ADD_ROUTE_NAME = "ADD_ROUTE_NAME";
 const CREATE_NEW_TRIP = 'CREATE_NEW_TRIP';
 const CREATE_ROUTE_NEW_TRIP = "CREATE_ROUTE_NEW_TRIP";
-const MANAGE_ROUTE_ORDER = 'MANAGE_ROUTE_ORDER'
-const RESET_NEW_TRIP_DATA = "RESET_NEW_TRIP_DATA";
+const ROUTE_ORDER = 'ROUTE_ORDER'
 
 // define the matching reducer function
 export function tripReducer(state, action){
@@ -87,30 +86,19 @@ export function tripReducer(state, action){
 
     case CREATE_NEW_TRIP:
         const newTripData  = {...action.payload.trip};
-        let newRouteData = [];
-        if(state.tripFormData.newRouteData !== undefined){
-          newRouteData = [...state.tripFormData.newRouteData];
-        }
-        return {...state, tripFormData:{newTripData, newRouteData}};
+        return {...state, tripFormData:{newTripData}};
 
     case CREATE_ROUTE_NEW_TRIP:
-      if(action.payload.newRoutesList !== undefined)
-      {
-        return{...state, 
+      return{...state, 
         tripFormData:{newTripData: {...state.tripFormData.newTripData},
-                      newRouteData:[...action.payload.newRoutesList],}};
-      }
-      break;
-    case MANAGE_ROUTE_ORDER:
-      if(action.payload.newRoutesList !== undefined){
-        return{...state, 
-        tripFormData:{newTripData: {...state.tripFormData.newTripData},
-                      newRouteData:[...action.payload.newRoutesList],}};
-      }
-      break;
-      
-    case RESET_NEW_TRIP_DATA:
-      return {...state, tripFormData: {}};
+                      newRouteData:[...action.payload.newRoutesList],
+                      routeOrder:{...state.tripFormData.routeOrder}}};
+
+// tripFormData: {
+//    newTripData:{},
+//    newRouteData:[],// [{name, difficulty}]
+//    routeOrder:[],
+//   }
 
     default:
       return state;
@@ -194,8 +182,6 @@ export function selectTripAction(tripIndex) {
 }
 
 export function createNewTripAction(trip) {
-  console.log(trip);
-  console.log({...trip})
   return {
     type: CREATE_NEW_TRIP,
     payload: {
@@ -212,19 +198,12 @@ export function createRoutesForNewTrip(newRoutesList){
     }
   }
 }
-export function routeOrderAction(newRoutesList){
+export function routeOrderAction(routeOrder){
   return{
-    type: MANAGE_ROUTE_ORDER,
+    type: ROUTE_ORDER,
     payload:{
-      newRoutesList
+      routeOrder
     }
-  }
-}
-
-export function resetNewTripFormAction(){
-  return {
-    type: RESET_NEW_TRIP_DATA,
-    payload: {},
   }
 }
 
