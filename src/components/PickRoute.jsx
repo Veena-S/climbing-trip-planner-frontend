@@ -125,7 +125,28 @@ export default function PickRoute({
   uniqueRouteNames = [defaultSelectValue, ...uniqueRouteNames];
 
   return (
-    <div className="container m-4 ml-auto">
+    <div className="container m-4 ml-auto pick-route form-container">
+      <div className="row m-3 form-progress-toggle no-gutters">
+        <div className="col">
+          <button
+            type="button"
+            className="btn btn-sm toggle-btns"
+            onClick={handleEditTrip}
+          >
+            ⬅️ Edit Trip
+          </button>
+          {/* </div> */}
+          {/* <div className="col-6"> */}
+          <button
+            type="button"
+            className="btn btn-sm toggle-btns"
+            onClick={handleContinueOrderRoutes}
+          >
+            Choose Routes Order ➡️
+          </button>
+        </div>
+      </div>
+
       <div className="row input-group m-3">
         <div className="col-3">
           <label htmlFor="select-route">Select a route: </label>
@@ -152,7 +173,7 @@ export default function PickRoute({
         </div>
       </div>
       <div className="row m-3">
-        <div className="col">OR</div>
+        <div className="col horizontal-centre-ing">-----OR-----</div>
       </div>
       <div className="row m-3">
         <div className="col-3">
@@ -191,7 +212,7 @@ export default function PickRoute({
       </div>
 
       <div className="row m-3">
-        <div className="col">
+        <div className="col add-route-container">
           <button
             type="button"
             className="btn btn-sm btn-primary"
@@ -202,30 +223,9 @@ export default function PickRoute({
         </div>
       </div>
 
-      <div className="row m-3">
-        <div className="col-6">
-          <button
-            type="button"
-            className="btn btn-sm btn-secondary"
-            onClick={handleEditTrip}
-          >
-            ⬅️ Edit Trip
-          </button>
-        </div>
-        <div className="col-6">
-          <button
-            type="button"
-            className="btn btn-sm btn-secondary"
-            onClick={handleContinueOrderRoutes}
-          >
-            Choose Routes Order ➡️
-          </button>
-        </div>
-      </div>
-
       <div className="container mt-5">
         <h5 className="mb-4 text-center">Selected Routes</h5>
-        <div className="row m-3 justify-content-center">
+        <div className="row m-3 justify-content-center table-header">
           <div className="col-2">
             <h6>No:</h6>
           </div>
@@ -239,24 +239,35 @@ export default function PickRoute({
             <h6>Delete</h6>
           </div>
         </div>
-
-        {routesAdded.map((newRoute, index) => (
-          <div className="row m-3 justify-content-center">
-            <div className="col-2">{index + 1}</div>
-            <div className="col-4">{newRoute.name}</div>
-            <div className="col-2">{newRoute.difficulty}</div>
-            <div className="col-2">
+        <div className="table-contents-container">
+          {routesAdded.map((newRoute, index) => (
+            <div className="row m-3 justify-content-center">
+              <div className="col-2">{index + 1}</div>
+              <div className="col-4">{newRoute.name}</div>
+              <div className="col-2">{newRoute.difficulty}</div>
+              <div className="col-2">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={() => handleDeleteRoute(newRoute, index)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+          <div className="row">
+            <div className="col horizontal-centre-ing">
               <button
                 type="button"
-                className="btn btn-sm btn-outline-danger"
-                onClick={() => handleDeleteRoute(newRoute, index)}
+                className="btn btn-sm btn-secondary"
+                onClick={handleContinueOrderRoutes}
               >
-                Delete
+                Next
               </button>
             </div>
           </div>
-        ))}
-
+        </div>
         {/* {Object.keys(routesAdded).map((newRoute, index) => (
           <div className="row m-3 justify-content-center">
             <div className="col-2">{index + 1}</div>

@@ -72,7 +72,7 @@ export default function OrderRoutes({
       // 1 to offset 0 indexing of arrays
       const startingIndex = index + 1;
       return (
-        <div className="row">
+        <div className="row table-row">
           <div className="col">{startingIndex}</div>{" "}
           <div className="col">{route.name}</div>
           <div className="col">{route.difficulty}</div>
@@ -101,33 +101,43 @@ export default function OrderRoutes({
   };
 
   return (
-    <div className=" container order-routes-container">
-      <div className="row">
+    <div className=" container m-4 ml-auto mr-auto order-routes-container form-container">
+      <div className="row m-3 form-progress-toggle">
+        <div className="col">
+          <button
+            type="button"
+            className="btn btn-sm  toggle-btns"
+            onClick={handleEditRoutes}
+          >
+            ⬅️ Pick routes
+          </button>
+
+          <button
+            type="button"
+            className="btn btn-sm  toggle-btns"
+            onClick={handlePreview}
+          >
+            Review and submit ➡️
+          </button>
+        </div>
+      </div>
+      <div className="row table-header">
         <div className="col table-headers">No.</div>
         <div className="col table-headers">Route</div>
         <div className="col table-headers">Difficulty</div>
         <div className="col table-headers">Preference</div>
       </div>
-      <DisplayedRoutes />
-
-      {/* // To add the Back button for editing routes */}
+      <div className="table-contents-container">
+        <DisplayedRoutes />
+      </div>
       <div className="row">
-        <div className="col">
+        <div className="col horizontal-centre-ing">
           <button
             type="button"
-            className="btn btn-sm btn-secondary"
-            onClick={handleEditRoutes}
-          >
-            ⬅️ Pick routes
-          </button>
-        </div>
-        <div className="col">
-          <button
-            type="button"
-            className="btn btn-sm btn-secondary"
+            className="btn btn-sm  btn-secondary"
             onClick={handlePreview}
           >
-            Review and submit ➡️
+            Next
           </button>
         </div>
       </div>

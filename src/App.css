@@ -1,3 +1,60 @@
+:root {
+  --main-bg-color: #eddcd2;
+  --box-color: #f0efeb;
+  --forward-backward-toggle-bar: #b7b7a4;
+  --table-header-bg-color: #cb997e;
+  --table-row-divider: rgba(203, 153, 126, 0.2);
+}
+
+.table-row {
+  border-bottom: solid var(--table-row-divider) 3px;
+}
+.page-root {
+  background-color: var(--main-bg-color);
+  height: 100vh;
+}
+.form-progress-toggle {
+  background-color: var(--forward-backward-toggle-bar);
+}
+.form-progress-toggle .col {
+  display: flex;
+  justify-content: space-between;
+}
+.card-container {
+  background-color: var(--box-color);
+}
+/* .or-row {
+  display: flex;
+  justify-content: center;
+} */
+.form-progress-toggle .btn {
+  /* background-color: none; */
+}
+
+.form-container {
+  background-color: var(--box-color);
+  /* overflow: scroll; */
+  padding: 2rem 0px 2rem;
+}
+
+.toggle-btns {
+  font-weight: 700 !important;
+  color: white !important;
+}
+
+.horizontal-centre-ing {
+  display: flex;
+  justify-content: center;
+}
+.add-route-container {
+  display: flex;
+  justify-content: center;
+}
+
+.table-header {
+  background-color: var(--table-header-bg-color);
+  color: white;
+}
 .App {
   text-align: center;
 }
@@ -7,11 +64,11 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+/* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
+} */
 
 .App-header {
   background-color: #282c34;
