@@ -75,7 +75,7 @@ export default function CreateNewTrip({ setShowPickRouteComp }) {
   };
 
   return (
-    <div className="container m-4 ml-auto">
+    <div className="container m-4 ml-auto mr-auto form-container">
       <div className="row">
         <div className="col">
           <p>Trip name</p>
@@ -127,7 +127,7 @@ export default function CreateNewTrip({ setShowPickRouteComp }) {
         </div>
       </div>
       <div className="row">
-        <div className="col">
+        <div className="col horizontal-centre-ing">
           <Button className="btn-sm btn-secondary" onClick={handleButtonClick}>
             Select routes ➡️
           </Button>
