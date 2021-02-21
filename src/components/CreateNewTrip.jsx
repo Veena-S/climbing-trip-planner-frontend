@@ -127,7 +127,7 @@ export default function CreateNewTrip({ setShowPickRouteComp }) {
         </div>
       </div>
       <div className="row">
-        <div className="col">
+        <div className="col horizontal-centre-ing">
           <Button className="btn-sm btn-secondary" onClick={handleButtonClick}>
             Select routes ➡️
           </Button>

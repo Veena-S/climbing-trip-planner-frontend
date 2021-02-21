@@ -32,6 +32,19 @@ export default function ReviewNewTrip({
 
   return (
     <div className="container m-3 p-3 form-container">
+      <div className="row m-3 form-progress-toggle">
+        <div className="col">
+          <button
+            type="button"
+            className="btn btn-sm toggle-btns"
+            onClick={handleEdit}
+          >
+            ⬅️ Order routes
+          </button>
+          {/* </div>
+        <div className="col"> */}
+        </div>
+      </div>
       <div className="row mb-4">
         <div className="col text-center">
           <h4>New Trip Details</h4>
@@ -39,26 +52,6 @@ export default function ReviewNewTrip({
       </div>
       <DisplayTrip tripData={displayTripData}></DisplayTrip>
       <div className="mt-4">
-        <div className="row">
-          <div className="col">
-            <button
-              type="button"
-              className="btn btn-sm btn-secondary"
-              onClick={handleEdit}
-            >
-              Edit
-            </button>
-          </div>
-          <div className="col">
-            <button
-              type="button"
-              className="btn btn-sm btn-dark"
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
         {submitSuccess && (
           <div
             class="alert alert-secondary mt-4 alert-dismissible fade show"
@@ -68,6 +61,17 @@ export default function ReviewNewTrip({
             {/* <button type="button" className="btn btn-close" data-bs-dismiss="alert" aria-label="Close"></button> */}
           </div>
         )}
+      </div>
+      <div className="row">
+        <div className="col horizontal-centre-ing">
+          <button
+            type="button"
+            className="btn btn-sm btn-primary"
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   );

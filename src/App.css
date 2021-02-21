@@ -6,12 +6,17 @@
   --table-row-divider: rgba(203, 153, 126, 0.2);
 }
 
+/* html,
+body {
+  height: 100vh;
+} */
 .table-row {
   border-bottom: solid var(--table-row-divider) 3px;
 }
 .page-root {
   background-color: var(--main-bg-color);
   height: 100vh;
+  overflow: scroll;
 }
 .form-progress-toggle {
   background-color: var(--forward-backward-toggle-bar);
@@ -62,6 +67,19 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.upcoming-trips-container {
+  margin-top: 2rem;
+  background-color: rgba(203, 153, 126, 0.8);
+}
+.active-trips-container {
+  margin-top: 1rem;
+  background-color: rgba(203, 153, 126, 0.8);
+}
+.past-trips-container {
+  margin-top: 1rem;
+  background-color: rgba(203, 153, 126, 0.8);
 }
 
 /* @media (prefers-reduced-motion: no-preference) {
